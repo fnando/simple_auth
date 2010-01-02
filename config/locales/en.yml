@@ -1,0 +1,5 @@
+en:
+  simple_auth:
+    sessions:
+      need_to_be_logged: "You need to be logged"
+      invalid_credentials: "Invalid username or password"
