@@ -99,7 +99,7 @@ You may receive strange errors related to `can't dup NilClass` or `You have a ni
 	klass.instance_variables.each { |var| klass.send(:remove_instance_variable, var) }
 	klass.instance_methods(false).each { |m| klass.send :undef_method, m }
 
-Dirty, but it works. Here's the ticket for this issue: [LINK TO LIGHTHOUSE TICKET]
+Dirty, but it works. Here's the ticket for this issue: [Issue #1290](https://rails.lighthouseapp.com/projects/8994/tickets/1290-activerecord-raises-randomly-apparently-a-timezone-issue#ticket-1290-30)
 
 To-Do
 -----
