@@ -1,9 +1,9 @@
 module SimpleAuth
   module ActionController
     module Implementation
-      def self.included(klass)
-        klass.prepend_before_filter :activate_simple_auth
-        klass.helper_method :current_user, :current_session, :logged_in?
+      def self.included(base)
+        base.prepend_before_filter :activate_simple_auth
+        base.helper_method :current_user, :current_session, :logged_in?
       end
     end
 

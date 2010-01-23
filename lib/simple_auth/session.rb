@@ -63,6 +63,8 @@ module SimpleAuth
     end
 
     def initialize(options = {})
+      options ||= {}
+
       @credential = options[:credential]
       @password = options[:password]
       @controller = SimpleAuth::Config.controller
