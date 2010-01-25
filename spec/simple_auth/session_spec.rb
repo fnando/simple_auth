@@ -74,6 +74,18 @@ describe SimpleAuth::Session do
       @user_session.save
     end
 
+    it "should unset previous record id when is not valid" do
+      @session[:record_id] = 1
+      @user_session.should_not be_valid
+      @session[:record_id].should be_nil
+    end
+
+    it "should unset previous record id when is not saved" do
+      @session[:record_id] = 1
+      @user_session.save.should be_false
+      @session[:record_id].should be_nil
+    end
+
     it "should be new record" do
       SimpleAuth::Session.new.should be_new_record
       @user_session.should be_new_record

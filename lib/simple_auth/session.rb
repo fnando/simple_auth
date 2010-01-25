@@ -81,6 +81,7 @@ module SimpleAuth
         true
       else
         errors.add_to_base I18n.translate("simple_auth.sessions.invalid_credentials")
+        controller.session[:record_id] = nil
         false
       end
     end
