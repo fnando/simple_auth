@@ -84,6 +84,37 @@ After you set up the model, you can go the controller.
 	  end
 	end
 
+You can restrict access by using 2 macros:
+
+	class SignupController < ApplicationController
+	  redirect_logged_user :to => "/"
+	end
+
+Here's some usage examples:
+
+	redirect_logged_user :to => proc { login_path }
+	redirect_logged_user :to => {:controller => "dashboard"}
+	redirect_logged_user :only => [:index], :to => login_path
+	redirect_logged_user :except => [:public], :to => login_path
+
+To require a logged user, use the `require_logged_user` macro:
+
+	class DashboardController < ApplicationController
+	  require_logged_user :to => proc { login_path }
+	end
+
+Here's some usage examples:
+
+	require_logged_user :to => proc { login_path }
+	require_logged_user :to => {:controller => "session", :action => "new"}
+	require_logged_user :only => [:index], :to => login_path
+	require_logged_user :except => [:public], :to => login_path
+
+You can skip the `:to` option if you set it globally on your initializer:
+
+	SimpleAuth::Config.redirect_to = {:controller => "session", :action => "new"}
+	SimpleAuth::Config.redirect_to = proc { login_path }
+
 There are some helpers:
 
 	logged_in?				# controller & views
