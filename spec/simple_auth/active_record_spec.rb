@@ -34,6 +34,22 @@ describe SimpleAuth::ActiveRecord do
       subject.password.should be_nil
       subject.password_confirmation.should be_nil
     end
+
+    it "should mark password as changed" do
+      subject = User.new(:password => "test")
+      subject.password_changed?.should be_true
+    end
+
+    it "should not mark password as changed" do
+      subject = User.new
+      subject.password_changed?.should be_false
+    end
+
+    it "should mark password as unchanged after saving" do
+      subject = User.new(:password => "test", :password_confirmation => "test")
+      subject.save(false)
+      subject.password_changed?.should be_false
+    end
   end
 
   context "existing record" do
@@ -56,9 +72,16 @@ describe SimpleAuth::ActiveRecord do
       subject.should be_valid
     end
 
-    it "should not require password confirmation when it has changed" do
+    it "should require password confirmation when it has changed" do
       subject.password = "newpass"
+      subject.should_not be_valid
       subject.should have(1).error_on(:password_confirmation)
+    end
+
+    it "should require password when it has changed to blank" do
+      subject.password = nil
+      subject.should_not be_valid
+      subject.should have(1).error_on(:password)
     end
 
     it "should authenticate using email" do

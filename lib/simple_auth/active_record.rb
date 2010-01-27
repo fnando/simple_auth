@@ -1,6 +1,15 @@
 module SimpleAuth
   module ActiveRecord
     module InstanceMethods
+      def password=(password)
+        @password_changed = true
+        @password = password
+      end
+
+      def password_changed?
+        @password_changed == true
+      end
+
       private
         def encrypt_password
           self.password_salt = SimpleAuth::Config.salt.call(self)
@@ -10,10 +19,14 @@ module SimpleAuth
         def erase_password
           self.password = nil
           self.password_confirmation = nil
+
+          # Mark password as unchanged after erasing passwords,
+          # or it will be marked as changed anyway
+          @password_changed = false
         end
 
         def validate_password?
-          new_record? || password.present?
+          new_record? || password_changed?
         end
     end
 
@@ -62,7 +75,7 @@ module SimpleAuth
       #     end
       #   end
       def has_authentication(&block)
-        attr_accessor :password
+        attr_reader :password
         attr_accessor :password_confirmation
 
         SimpleAuth.setup(&block)
