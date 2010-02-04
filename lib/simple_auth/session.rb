@@ -29,6 +29,10 @@ module SimpleAuth
       def empty?
         @errors.empty?
       end
+
+      def [](attr_name)
+        []
+      end
     end
 
     def self.find

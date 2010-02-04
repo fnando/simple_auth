@@ -100,6 +100,11 @@ describe SimpleAuth::Session do
       @user_session.errors.on(:password).should be_nil
     end
 
+    it "should return empty array when trying to get errors by using hash syntax" do
+      @user_session.errors[:credential].should be_empty
+      @user_session.errors[:password].should be_empty
+    end
+
     it "should have errors" do
       @user_session.errors.should_not be_empty
     end
