@@ -30,7 +30,7 @@ describe SimpleAuth::ActionController, :type => :controller do
 
         it "should set warning message" do
           get :index
-          flash[:warning].should == "You need to be logged"
+          flash[:alert].should == "You need to be logged"
         end
 
         it "should redirect when user is not authorized" do

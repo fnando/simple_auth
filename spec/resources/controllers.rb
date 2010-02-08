@@ -19,7 +19,7 @@ class SessionController < ActionController::Base
     if @user_session.save
       redirect_to session.delete(:return_to) || dashboard_path
     else
-      flash[:warning] = "Invalid login/password."
+      flash[:alert] = "Invalid login/password."
       render :new
     end
   end

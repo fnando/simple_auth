@@ -73,7 +73,7 @@ After you set up the model, you can go the controller.
 	    if @user_session.save
 	      redirect_to dashboard_path
 	    else
-	      flash[:warning] = "Invalid username or password"
+	      flash[:alert] = "Invalid username or password"
 	      render :new
 	    end
 	  end

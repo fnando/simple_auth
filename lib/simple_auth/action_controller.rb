@@ -54,7 +54,7 @@ module SimpleAuth
             path = simple_auth_path(c, options[:to])
 
             unless logged_in? && authorized?
-              flash[:warning] = I18n.translate("simple_auth.sessions.need_to_be_logged")
+              flash[:alert] = I18n.translate("simple_auth.sessions.need_to_be_logged")
               session[:return_to] = request.request_uri if request.get?
               redirect_to path
             end
