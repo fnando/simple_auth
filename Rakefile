@@ -29,11 +29,3 @@ TXT
   gem.has_rdoc = false
   gem.files = %w(Rakefile simple_auth.gemspec init.rb VERSION README.markdown) + Dir["{generators,lib,spec,app,config}/**/*"]
 end
-
-desc "Generate gemspec and build gem"
-task :build_gem do
-  File.open("VERSION", "w+") {|f| f << SimpleAuth::Version::STRING }
-
-  Rake::Task["gemspec"].invoke
-  Rake::Task["build"].invoke
-end
