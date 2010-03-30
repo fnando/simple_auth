@@ -29,3 +29,5 @@ TXT
   gem.has_rdoc = false
   gem.files = %w(Rakefile simple_auth.gemspec init.rb VERSION README.markdown) + Dir["{generators,lib,spec,app,config}/**/*"]
 end
+
+Jeweler::GemcutterTasks.new
