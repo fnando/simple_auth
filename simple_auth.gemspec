@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{simple_auth}
-  s.version = "0.1.4"
+  s.version = "0.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-01-27}
+  s.date = %q{2010-03-30}
   s.description = %q{When Authlogic & Devise are just too much.
 }
   s.email = %q{fnando.vieira@gmail.com}
@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.files = [
     "README.markdown",
      "Rakefile",
-     "VERSION",
      "app/helpers/simple_auth_helper.rb",
      "config/locales/en.yml",
      "config/locales/pt.yml",
@@ -44,10 +43,11 @@ Gem::Specification.new do |s|
      "spec/simple_auth/simple_auth_helper_spec.rb",
      "spec/spec_helper.rb"
   ]
+  s.has_rdoc = false
   s.homepage = %q{http://github.com/fnando/simple_auth}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{A simple authentication system for Rails apps}
   s.test_files = [
     "spec/resources/controllers.rb",
