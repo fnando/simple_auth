@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{simple_auth}
-  s.version = "0.1.5"
+  s.version = "0.1.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-03-30}
+  s.date = %q{2010-04-09}
   s.description = %q{When Authlogic & Devise are just too much.
 }
   s.email = %q{fnando.vieira@gmail.com}
@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.files = [
     "README.markdown",
      "Rakefile",
-     "app/helpers/simple_auth_helper.rb",
      "config/locales/en.yml",
      "config/locales/pt.yml",
      "generators/simple_auth/USAGE",
@@ -30,6 +29,7 @@ Gem::Specification.new do |s|
      "lib/simple_auth/action_controller.rb",
      "lib/simple_auth/active_record.rb",
      "lib/simple_auth/config.rb",
+     "lib/simple_auth/helper.rb",
      "lib/simple_auth/session.rb",
      "lib/simple_auth/version.rb",
      "simple_auth.gemspec",
@@ -39,11 +39,10 @@ Gem::Specification.new do |s|
      "spec/simple_auth/action_controller_spec.rb",
      "spec/simple_auth/active_record_spec.rb",
      "spec/simple_auth/config_spec.rb",
+     "spec/simple_auth/helper_spec.rb",
      "spec/simple_auth/session_spec.rb",
-     "spec/simple_auth/simple_auth_helper_spec.rb",
      "spec/spec_helper.rb"
   ]
-  s.has_rdoc = false
   s.homepage = %q{http://github.com/fnando/simple_auth}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
@@ -56,8 +55,8 @@ Gem::Specification.new do |s|
      "spec/simple_auth/action_controller_spec.rb",
      "spec/simple_auth/active_record_spec.rb",
      "spec/simple_auth/config_spec.rb",
+     "spec/simple_auth/helper_spec.rb",
      "spec/simple_auth/session_spec.rb",
-     "spec/simple_auth/simple_auth_helper_spec.rb",
      "spec/spec_helper.rb"
   ]
 
