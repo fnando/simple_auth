@@ -122,6 +122,12 @@ There are some helpers:
 	current_session         # controller & views
 	when_logged(&block)		# views
 
+If you're having problems to use any helper, include the module <tt>SimpleAuth::Helper</tt> to your <tt>ApplicationHelper</tt>.
+
+	module ApplicationHelper
+	  include SimpleAuth::Helper
+	end
+
 Troubleshooting
 ---------------
 

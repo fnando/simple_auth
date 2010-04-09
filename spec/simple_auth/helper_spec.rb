@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
-describe SimpleAuthHelper, :type => :helper do
+describe SimpleAuth::Helper, :type => :helper do
+  it "should include module" do
+    ApplicationController.included_modules.include?(SimpleAuth::Helper)
+  end
+
   it "should render block when user is logged" do
     helper.should_receive(:logged_in?).and_return(true)
     helper.when_logged { "logged" }.should == "logged"
