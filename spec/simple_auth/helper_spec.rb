@@ -1,6 +1,17 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
 describe SimpleAuth::Helper, :type => :helper do
+  if ENV["TARGET"] == "rails3"
+    attr_accessor :helper
+  
+    before do
+      @helper = Object.new
+      @helper.class_eval { attr_accessor :output_buffer }
+      @helper.extend(SimpleAuth::Helper)
+      @helper.extend(ActionView::Helpers::CaptureHelper)
+    end    
+  end
+  
   it "should include module" do
     ApplicationController.included_modules.include?(SimpleAuth::Helper)
   end

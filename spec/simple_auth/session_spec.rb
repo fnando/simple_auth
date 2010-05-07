@@ -11,7 +11,7 @@ describe SimpleAuth::Session do
 
     @session = Hash.new
     @controller = SampleController.new
-    @controller.session = @session
+    @controller.stub!(:session).and_return(@session)
 
     SimpleAuth::Config.controller = @controller
     @user_session = SimpleAuth::Session.new(:credential => "johndoe", :password => "test")

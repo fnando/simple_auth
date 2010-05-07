@@ -1,7 +1,11 @@
 # Add routes
-ActionController::Routing::Routes.add_route "/:controller/:action/:id"
-ActionController::Routing::Routes.add_named_route :login, "/login", :controller => "session", :action => "new"
-ActionController::Routing::Routes.add_named_route :dashboard, "/dashboard", :controller => "dashboard", :action => "index"
+if ENV["TARGET"] == "rails3"
+  # Rails.application.routes.add_route "/:controller/:action/:id"
+else
+  ActionController::Routing::Routes.add_route "/:controller/:action/:id"
+  ActionController::Routing::Routes.add_named_route :login, "/login", :controller => "session", :action => "new"
+  ActionController::Routing::Routes.add_named_route :dashboard, "/dashboard", :controller => "dashboard", :action => "index"
+end
 
 class SampleController < ActionController::Base
 end

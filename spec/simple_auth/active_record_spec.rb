@@ -9,28 +9,28 @@ describe SimpleAuth::ActiveRecord do
     end
 
     it "should require password" do
-      subject.should have(1).error_on(:password)
+      [subject.errors[:password]].flatten.should have(1).item
     end
 
     it "should require password to be at least 4-chars long" do
       subject.password = "123"
       subject.should_not be_valid
-      subject.should have(1).error_on(:password)
+      [subject.errors[:password]].flatten.should have(1).item
     end
 
     it "should require password confirmation not to be empty" do
       subject.password_confirmation = ""
-      subject.should have(1).error_on(:password_confirmation)
+      [subject.errors[:password_confirmation]].flatten.should have(1).item
     end
 
     it "should require password confirmation not to be nil" do
       subject.password_confirmation = nil
-      subject.should have(1).error_on(:password_confirmation)
+      [subject.errors[:password_confirmation]].flatten.should have(1).item
     end
 
     it "should unset password after saving" do
       subject = User.new(:password => "test", :password_confirmation => "test")
-      subject.save(false)
+      subject.save
       subject.password.should be_nil
       subject.password_confirmation.should be_nil
     end
@@ -47,7 +47,7 @@ describe SimpleAuth::ActiveRecord do
 
     it "should mark password as unchanged after saving" do
       subject = User.new(:password => "test", :password_confirmation => "test")
-      subject.save(false)
+      subject.save
       subject.password_changed?.should be_false
     end
   end
@@ -75,13 +75,13 @@ describe SimpleAuth::ActiveRecord do
     it "should require password confirmation when it has changed" do
       subject.password = "newpass"
       subject.should_not be_valid
-      subject.should have(1).error_on(:password_confirmation)
+      [subject.errors[:password_confirmation]].flatten.should have(1).item
     end
 
     it "should require password when it has changed to blank" do
       subject.password = nil
       subject.should_not be_valid
-      subject.should have(1).error_on(:password)
+      [subject.errors[:password]].flatten.should have(1).item
     end
 
     it "should authenticate using email" do

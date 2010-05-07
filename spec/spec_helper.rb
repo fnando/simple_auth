@@ -22,9 +22,20 @@ require File.dirname(__FILE__) + "/resources/user"
 require File.dirname(__FILE__) + "/resources/controllers"
 
 # Restore default configuration
-Spec::Runner.configure do |config|
-  config.before :each do
-    load File.dirname(__FILE__) + "/../lib/simple_auth/config.rb"
-    SimpleAuth::Config.model = :user
+if ENV["TARGET"] == "rails3"
+  Rspec.configure do |config|
+    config.before :each do
+      load File.dirname(__FILE__) + "/../lib/simple_auth/config.rb"
+      SimpleAuth::Config.model = :user
+    end
+  end
+
+  ActionController::Base.prepend_view_path File.dirname(__FILE__) + "/resources/views"
+else
+  Spec::Runner.configure do |config|
+    config.before :each do
+      load File.dirname(__FILE__) + "/../lib/simple_auth/config.rb"
+      SimpleAuth::Config.model = :user
+    end
   end
 end

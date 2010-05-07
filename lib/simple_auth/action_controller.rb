@@ -55,7 +55,14 @@ module SimpleAuth
 
             unless logged_in? && authorized?
               flash[:alert] = I18n.translate("simple_auth.sessions.need_to_be_logged")
-              session[:return_to] = request.request_uri if request.get?
+
+              if request.respond_to?(:fullpath)
+                return_to = request.fullpath
+              else
+                return_to = request.request_uri
+              end
+
+              session[:return_to] = return_to if request.get?
               redirect_to path
             end
           end

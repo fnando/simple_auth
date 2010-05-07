@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
-describe SimpleAuth::ActionController, :type => :controller do
+describe DashboardController, :type => :controller do
   before do
     @user = User.create(
       :login => "johndoe",
@@ -11,11 +11,11 @@ describe SimpleAuth::ActionController, :type => :controller do
   end
 
   describe "require_logged_user" do
-    controller_name :dashboard
-
     context "unlogged user" do
       before do
-        DashboardController.filter_chain.pop if DashboardController.filter_chain.count > 1
+        if ENV["TARGET"] != "rails3"
+          DashboardController.filter_chain.pop if DashboardController.filter_chain.count > 1
+        end
       end
 
       context "return to" do
@@ -34,8 +34,8 @@ describe SimpleAuth::ActionController, :type => :controller do
         end
 
         it "should redirect when user is not authorized" do
-          controller.should_receive(:logged_in?).and_return(true)
-          controller.should_receive(:authorized?).and_return(false)
+          @controller.should_receive(:logged_in?).and_return(true)
+          @controller.should_receive(:authorized?).and_return(false)
 
           get :index
           response.should redirect_to("/login")
@@ -46,7 +46,12 @@ describe SimpleAuth::ActionController, :type => :controller do
         DashboardController.require_logged_user :to => {:controller => "session", :action => "new"}
 
         get :index
-        response.should redirect_to("/session/new")
+        
+        if ENV["TARGET"] == "rails3"
+          response.should redirect_to("/login")
+        else
+          response.should redirect_to("/session/new")
+        end
       end
 
       it "should be redirected [block]" do
@@ -75,26 +80,35 @@ describe SimpleAuth::ActionController, :type => :controller do
       end
     end
   end
+end
 
+describe SessionController, :type => :controller do
+  before do
+    @user = User.create(
+      :login => "johndoe",
+      :email => "john@doe.com",
+      :password => "test",
+      :password_confirmation => "test"
+    )
+  end
+  
   describe "redirect_logged_users" do
-    controller_name :session
-
     context "unlogged user" do
       before do
         get :new
       end
-
+  
       it "should render page" do
         response.should render_template(:new)
       end
     end
-
+  
     context "logged user" do
       before do
         session[:record_id] = @user.id
         get :new
       end
-
+  
       it "should be redirected" do
         response.should redirect_to("/dashboard")
       end
