@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{simple_auth}
-  s.version = "0.1.6"
+  s.version = "0.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-04-09}
+  s.date = %q{2010-05-07}
   s.description = %q{When Authlogic & Devise are just too much.
 }
   s.email = %q{fnando.vieira@gmail.com}
@@ -35,6 +35,8 @@ Gem::Specification.new do |s|
      "simple_auth.gemspec",
      "spec/resources/controllers.rb",
      "spec/resources/user.rb",
+     "spec/resources/views/dashboard/index.erb",
+     "spec/resources/views/session/new.erb",
      "spec/schema.rb",
      "spec/simple_auth/action_controller_spec.rb",
      "spec/simple_auth/active_record_spec.rb",
