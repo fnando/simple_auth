@@ -1,3 +1,5 @@
+require "simple_auth/config" unless defined?(SimpleAuth::Config)
+
 module SimpleAuth
   module ActiveRecord
     module InstanceMethods
@@ -91,3 +93,6 @@ module SimpleAuth
     end
   end
 end
+
+::ActiveRecord::Base.send :include, SimpleAuth::ActiveRecord::InstanceMethods
+::ActiveRecord::Base.send :extend, SimpleAuth::ActiveRecord::ClassMethods

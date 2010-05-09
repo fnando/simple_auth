@@ -128,6 +128,13 @@ If you're having problems to use any helper, include the module <tt>SimpleAuth::
 	  include SimpleAuth::Helper
 	end
 
+Sinatra support
+---------------
+
+Sinatra is not fully supported. For now, you can only use the ActiveRecord part:
+
+	require "simple_auth/active_record"
+
 Troubleshooting
 ---------------
 
