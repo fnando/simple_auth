@@ -66,6 +66,10 @@ module SimpleAuth
       true
     end
 
+    def self.model_name
+      ActiveModel::Name.new(self)
+    end
+
     def initialize(options = {})
       options ||= {}
 
@@ -74,6 +78,10 @@ module SimpleAuth
       @controller = SimpleAuth::Config.controller
       @model = SimpleAuth::Config.model_class
       @errors = Errors.new
+    end
+
+    def to_key
+      nil
     end
 
     def new_record?

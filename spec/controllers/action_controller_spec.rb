@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + "/../spec_helper"
+require "spec_helper"
 
-describe DashboardController, :type => :controller do
+describe DashboardController do
   before do
     @user = User.create(
       :login => "johndoe",
@@ -11,14 +11,8 @@ describe DashboardController, :type => :controller do
   end
 
   describe "require_logged_user" do
-    context "unlogged user" do
-      before do
-        if ENV["TARGET"] != "rails3"
-          DashboardController.filter_chain.pop if DashboardController.filter_chain.count > 1
-        end
-      end
-
-      context "return to" do
+    context "when unlogged" do
+      context "redirecting to requested page" do
         before do
           DashboardController.require_logged_user :to => "/login"
         end
@@ -44,19 +38,12 @@ describe DashboardController, :type => :controller do
 
       it "should be redirected [hash]" do
         DashboardController.require_logged_user :to => {:controller => "session", :action => "new"}
-
         get :index
-        
-        if ENV["TARGET"] == "rails3"
-          response.should redirect_to("/login")
-        else
-          response.should redirect_to("/session/new")
-        end
+        response.should redirect_to("/login")
       end
 
       it "should be redirected [block]" do
         DashboardController.require_logged_user :to => proc { login_path }
-
         get :index
         response.should redirect_to("/login")
       end
@@ -69,7 +56,7 @@ describe DashboardController, :type => :controller do
       end
     end
 
-    context "logged user" do
+    context "when logged" do
       before do
         session[:record_id] = @user.id
         get :index
@@ -82,7 +69,7 @@ describe DashboardController, :type => :controller do
   end
 end
 
-describe SessionController, :type => :controller do
+describe SessionController do
   before do
     @user = User.create(
       :login => "johndoe",
@@ -91,24 +78,24 @@ describe SessionController, :type => :controller do
       :password_confirmation => "test"
     )
   end
-  
+
   describe "redirect_logged_users" do
-    context "unlogged user" do
+    context "when unlogged" do
       before do
         get :new
       end
-  
+
       it "should render page" do
         response.should render_template(:new)
       end
     end
-  
-    context "logged user" do
+
+    context "when logged" do
       before do
         session[:record_id] = @user.id
         get :new
       end
-  
+
       it "should be redirected" do
         response.should redirect_to("/dashboard")
       end

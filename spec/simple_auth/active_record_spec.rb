@@ -1,31 +1,49 @@
-require File.dirname(__FILE__) + "/../spec_helper"
+require "spec_helper"
 
 describe SimpleAuth::ActiveRecord do
-  context "new record" do
-    subject { User.new }
+  subject { User.new }
 
+  context "configuration" do
+    it "should set credentials" do
+      User.authentication do |config|
+        config.credentials = ["uid"]
+      end
+
+      SimpleAuth::Config.credentials.should == ["uid"]
+    end
+
+    it "should automatically set model" do
+      User.authentication do |config|
+        config.model = nil
+      end
+
+      SimpleAuth::Config.model.should == :user
+    end
+  end
+
+  context "new record" do
     before do
       subject.should_not be_valid
     end
 
     it "should require password" do
-      [subject.errors[:password]].flatten.should have(1).item
+      subject.errors[:password].should_not be_empty
     end
 
     it "should require password to be at least 4-chars long" do
       subject.password = "123"
       subject.should_not be_valid
-      [subject.errors[:password]].flatten.should have(1).item
+      subject.errors[:password].should_not be_empty
     end
 
     it "should require password confirmation not to be empty" do
       subject.password_confirmation = ""
-      [subject.errors[:password_confirmation]].flatten.should have(1).item
+      subject.errors[:password_confirmation].should_not be_empty
     end
 
     it "should require password confirmation not to be nil" do
       subject.password_confirmation = nil
-      [subject.errors[:password_confirmation]].flatten.should have(1).item
+      subject.errors[:password_confirmation].should_not be_empty
     end
 
     it "should unset password after saving" do
@@ -53,19 +71,18 @@ describe SimpleAuth::ActiveRecord do
   end
 
   context "existing record" do
-    subject {
-      User.new(
+    before do
+      User.delete_all
+      User.create(
         :email => "john@doe.com",
         :login => "johndoe",
         :password => "test",
         :password_confirmation => "test",
         :username => "john"
       )
-    }
-
-    before do
-      subject.save!
     end
+
+    subject { User.first }
 
     it "should not require password when it hasn't changed" do
       subject.login = "john"
@@ -75,13 +92,13 @@ describe SimpleAuth::ActiveRecord do
     it "should require password confirmation when it has changed" do
       subject.password = "newpass"
       subject.should_not be_valid
-      [subject.errors[:password_confirmation]].flatten.should have(1).item
+      subject.errors[:password_confirmation].should_not be_empty
     end
 
     it "should require password when it has changed to blank" do
       subject.password = nil
       subject.should_not be_valid
-      [subject.errors[:password]].flatten.should have(1).item
+      subject.errors[:password].should_not be_empty
     end
 
     it "should authenticate using email" do

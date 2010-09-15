@@ -9,31 +9,31 @@ module SimpleAuth
 
     module InstanceMethods
       private
-        def current_session
-          @current_session ||= SimpleAuth::Session.find
-        end
+      def current_session
+        @current_session ||= SimpleAuth::Session.find
+      end
 
-        def current_user
-          current_session && current_session.record
-        end
+      def current_user
+        current_session && current_session.record
+      end
 
-        def authorized?
-          true
-        end
+      def authorized?
+        true
+      end
 
-        def logged_in?
-          current_user != nil
-        end
+      def logged_in?
+        current_user != nil
+      end
 
-        def activate_simple_auth
-          SimpleAuth::Config.controller = self
-        end
+      def activate_simple_auth
+        SimpleAuth::Config.controller = self
+      end
 
-        def simple_auth_path(controller, path)
-          path ||= SimpleAuth::Config.redirect_to
-          path = controller.instance_eval(&path) if path.kind_of?(Proc)
-          path
-        end
+      def simple_auth_path(controller, path)
+        path ||= SimpleAuth::Config.redirect_to
+        path = controller.instance_eval(&path) if path.kind_of?(Proc)
+        path
+      end
     end
 
     module ClassMethods

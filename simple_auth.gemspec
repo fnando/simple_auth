@@ -9,9 +9,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-05-09}
-  s.description = %q{When Authlogic & Devise are just too much.
-}
+  s.date = %q{2010-09-08}
+  s.description = %q{When Authlogic & Devise are just too much.}
   s.email = %q{fnando.vieira@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -21,52 +20,66 @@ Gem::Specification.new do |s|
      "Rakefile",
      "config/locales/en.yml",
      "config/locales/pt.yml",
-     "generators/simple_auth/USAGE",
-     "generators/simple_auth/simple_auth_generator.rb",
-     "generators/simple_auth/templates/simple_auth.rb",
-     "init.rb",
      "lib/simple_auth.rb",
      "lib/simple_auth/action_controller.rb",
      "lib/simple_auth/active_record.rb",
      "lib/simple_auth/config.rb",
+     "lib/simple_auth/generator.rb",
      "lib/simple_auth/helper.rb",
+     "lib/simple_auth/railtie.rb",
      "lib/simple_auth/session.rb",
      "lib/simple_auth/version.rb",
      "simple_auth.gemspec",
-     "spec/resources/controllers.rb",
-     "spec/resources/user.rb",
-     "spec/resources/views/dashboard/index.erb",
-     "spec/resources/views/session/new.erb",
+     "spec/controllers/action_controller_spec.rb",
      "spec/schema.rb",
-     "spec/simple_auth/action_controller_spec.rb",
      "spec/simple_auth/active_record_spec.rb",
      "spec/simple_auth/config_spec.rb",
      "spec/simple_auth/helper_spec.rb",
      "spec/simple_auth/session_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "spec/support/Gemfile",
+     "spec/support/Gemfile.lock",
+     "spec/support/app/controllers/application_controller.rb",
+     "spec/support/app/controllers/dashboard_controller.rb",
+     "spec/support/app/controllers/sample_controller.rb",
+     "spec/support/app/controllers/session_controller.rb",
+     "spec/support/app/models/user.rb",
+     "spec/support/app/views/dashboard/index.erb",
+     "spec/support/app/views/session/new.erb",
+     "spec/support/config/boot.rb",
+     "spec/support/config/database.yml",
+     "spec/support/config/routes.rb",
+     "spec/support/log/development.log",
+     "spec/support/log/test.log",
+     "templates/initializer.rb"
   ]
   s.homepage = %q{http://github.com/fnando/simple_auth}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{A simple authentication system for Rails apps}
   s.test_files = [
-    "spec/resources/controllers.rb",
-     "spec/resources/user.rb",
+    "spec/controllers/action_controller_spec.rb",
      "spec/schema.rb",
-     "spec/simple_auth/action_controller_spec.rb",
      "spec/simple_auth/active_record_spec.rb",
      "spec/simple_auth/config_spec.rb",
      "spec/simple_auth/helper_spec.rb",
      "spec/simple_auth/session_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "spec/support/app/controllers/application_controller.rb",
+     "spec/support/app/controllers/dashboard_controller.rb",
+     "spec/support/app/controllers/sample_controller.rb",
+     "spec/support/app/controllers/session_controller.rb",
+     "spec/support/app/models/user.rb",
+     "spec/support/config/boot.rb",
+     "spec/support/config/routes.rb"
   ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
     else
     end
   else

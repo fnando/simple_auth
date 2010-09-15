@@ -16,7 +16,7 @@ As gem:
 
 	sudo gem install simple_auth
 
-Then run `script/generate simple_auth` to copy the initializer file.
+Then run `rails generate simple_auth:install` to copy the initializer file.
 
 Usage
 -----
@@ -45,20 +45,14 @@ Your user model should have the attributes `password_hash` and `password_salt`. 
 	end
 
 If your user model is other than `User`, you have to set it in your `config/initializer/simple_auth.rb` initializer file.
-You can also set up the credentials attributes.
+You can also set up the credentials attributes and crypters.
 
 	SimpleAuth.setup do |config|
 	  config.model = :account
 	  config.credentials = [:username]
 	end
 
-On your model, call the method `has_authentication`.
-
-	class User < ActiveRecord::Base
-	  has_authentication
-	end
-
-This will add some callbacks and password validations.
+This will add some callbacks and password validations. It will also inject helper methods like `Model.authenticate`.
 
 After you set up the model, you can go the controller.
 
@@ -122,7 +116,7 @@ There are some helpers:
 	current_session         # controller & views
 	when_logged(&block)		# views
 
-If you're having problems to use any helper, include the module <tt>SimpleAuth::Helper</tt> to your <tt>ApplicationHelper</tt>.
+If you're having problems to use any helper, include the module <tt>SimpleAuth::Helper</tt> on your <tt>ApplicationHelper</tt>.
 
 	module ApplicationHelper
 	  include SimpleAuth::Helper

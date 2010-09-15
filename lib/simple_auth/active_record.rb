@@ -2,6 +2,49 @@ require "simple_auth/config" unless defined?(SimpleAuth::Config)
 
 module SimpleAuth
   module ActiveRecord
+    def self.included(base)
+      base.class_eval { extend Macro }
+    end
+
+    module Macro
+      # Set virtual attributes, callbacks and validations.
+      # Is called automatically after setting up configuration with
+      # `SimpleAuth.setup {|config| config.model = :user}`.
+      #
+      #   class User < ActiveRecord::Base
+      #     authentication
+      #   end
+      #
+      # Can set configuration when a block is provided.
+      #
+      #   class User < ActiveRecord::Base
+      #     authentication do |config|
+      #       config.credentials = ["email"]
+      #     end
+      #   end
+      #
+      def authentication(&block)
+        SimpleAuth.setup(&block) if block_given?
+        SimpleAuth::Config.model ||= name.underscore.to_sym
+
+        return if respond_to?(:authenticate)
+
+        attr_reader :password
+        attr_accessor :password_confirmation
+
+        include SimpleAuth::ActiveRecord::InstanceMethods
+        extend  SimpleAuth::ActiveRecord::ClassMethods
+
+        before_save :encrypt_password, :if => :validate_password?
+        after_save  :erase_password
+
+        validates_presence_of     :password,              :if => :validate_password?
+        validates_length_of       :password,              :if => :validate_password?, :minimum => 4, :allow_blank => true
+        validates_presence_of     :password_confirmation, :if => :validate_password?
+        validates_confirmation_of :password,              :if => :validate_password?
+      end
+    end
+
     module InstanceMethods
       def password=(password)
         @password_changed = true
@@ -13,23 +56,23 @@ module SimpleAuth
       end
 
       private
-        def encrypt_password
-          self.password_salt = SimpleAuth::Config.salt.call(self)
-          self.password_hash = SimpleAuth::Config.crypter.call(password, password_salt)
-        end
+      def encrypt_password
+        self.password_salt = SimpleAuth::Config.salt.call(self)
+        self.password_hash = SimpleAuth::Config.crypter.call(password, password_salt)
+      end
 
-        def erase_password
-          self.password = nil
-          self.password_confirmation = nil
+      def erase_password
+        self.password = nil
+        self.password_confirmation = nil
 
-          # Mark password as unchanged after erasing passwords,
-          # or it will be marked as changed anyway
-          @password_changed = false
-        end
+        # Mark password as unchanged after erasing passwords,
+        # or it will be marked as changed anyway
+        @password_changed = false
+      end
 
-        def validate_password?
-          new_record? || password_changed?
-        end
+      def validate_password?
+        new_record? || password_changed?
+      end
     end
 
     module ClassMethods
@@ -61,34 +104,8 @@ module SimpleAuth
         # Compare password
         return nil unless record.password_hash == SimpleAuth::Config.crypter.call(password, record.password_salt)
 
-        return record
-      end
-
-      # Set virtual attributes, callbacks and acts as a wrapper for
-      # SimpleAuth::Config if a block is provided.
-      #
-      #   class User < ActiveRecord::Base
-      #     has_authentication
-      #   end
-      #
-      #   class User < ActiveRecord::Base
-      #     has_authentication do |config|
-      #       config.credentials = [:email]
-      #     end
-      #   end
-      def has_authentication(&block)
-        attr_reader :password
-        attr_accessor :password_confirmation
-
-        SimpleAuth.setup(&block)
-
-        before_save :encrypt_password, :if => :validate_password?
-        after_save  :erase_password
-
-        validates_presence_of     :password,              :if => :validate_password?
-        validates_length_of       :password,              :if => :validate_password?, :minimum => 4, :allow_blank => true
-        validates_presence_of     :password_confirmation, :if => :validate_password?
-        validates_confirmation_of :password,              :if => :validate_password?
+        # Yay! Everything matched so return record.
+        record
       end
     end
   end

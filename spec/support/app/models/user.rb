@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-  has_authentication
+  authentication
 end

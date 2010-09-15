@@ -1,5 +1,0 @@
-Description:
-  Create an initializer file for SimpleAuth library.
-
-Examples:
-    script/generate simple_auth

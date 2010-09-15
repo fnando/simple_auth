@@ -1,7 +1,9 @@
-require File.dirname(__FILE__) + "/../spec_helper"
+require "spec_helper"
 
 describe SimpleAuth::Session do
   before do
+    User.delete_all
+
     @user = User.create!(
       :login => "johndoe",
       :email => "john@doe.com",
@@ -17,7 +19,7 @@ describe SimpleAuth::Session do
     @user_session = SimpleAuth::Session.new(:credential => "johndoe", :password => "test")
   end
 
-  context "valid credentials" do
+  context "with valid credentials" do
     before do
       @user_session.save!
     end
@@ -68,7 +70,7 @@ describe SimpleAuth::Session do
     end
   end
 
-  context "invalid credentials" do
+  context "with invalid credentials" do
     before do
       @user_session.credential = "invalid"
       @user_session.save
@@ -130,15 +132,15 @@ describe SimpleAuth::Session do
     end
 
     it "should raise error with save!" do
-      doing { @user_session.save! }.should raise_error(SimpleAuth::NotAuthorized)
+      expect { @user_session.save! }.to raise_error(SimpleAuth::NotAuthorized)
     end
 
     it "should raise error with create!" do
-      doing { SimpleAuth::Session.create!({}) }.should raise_error(SimpleAuth::NotAuthorized)
+      expect { SimpleAuth::Session.create!({}) }.to raise_error(SimpleAuth::NotAuthorized)
     end
   end
 
-  context "destroying valid session" do
+  context "when destroying session" do
     before do
       @user_session.save!
       @user_session.destroy

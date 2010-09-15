@@ -1,9 +1,20 @@
-require File.dirname(__FILE__) + "/../spec_helper"
+require "spec_helper"
 
 describe SimpleAuth::Config do
   it "should yield SimpleAuth::Config class" do
     SimpleAuth.setup do |config|
       config.should == SimpleAuth::Config
+    end
+  end
+
+  context "injecting behavior" do
+    it "should not respond to helper methods" do
+      Account.should_not respond_to(:authenticate)
+    end
+
+    it "should respond to helper methods after setting model on setup" do
+      SimpleAuth.setup {|c| c.model = :account}
+      Account.should respond_to(:authenticate)
     end
   end
 
