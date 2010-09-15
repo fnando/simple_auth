@@ -11,7 +11,7 @@ begin
 
   JEWEL = Jeweler::Tasks.new do |gem|
     gem.name = "simple_auth"
-    gem.version = SimpleAuth::Version::STRING
+    gem.version = SimpleAuth::Version::STRING + ".beta.1"
     gem.summary = "A simple authentication system for Rails apps"
     gem.description = "When Authlogic & Devise are just too much."
     gem.authors = ["Nando Vieira"]
