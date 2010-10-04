@@ -12,7 +12,7 @@ describe SimpleAuth::Session do
     )
 
     @session = Hash.new
-    @controller = SampleController.new
+    @controller = ActionController::Base.new
     @controller.stub!(:session).and_return(@session)
 
     SimpleAuth::Config.controller = @controller

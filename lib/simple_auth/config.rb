@@ -1,5 +1,5 @@
 module SimpleAuth
-  # Add a shortcut to Authorization::Config
+  # Add a shortcut to SimpleAuth::Config
   def self.setup(&block)
     yield SimpleAuth::Config if block_given?
     Config.model_class.authentication if Config.model
@@ -33,8 +33,13 @@ module SimpleAuth
     @@controller = nil
 
     # Set the login url
-    cattr_accessor :redirect_to
-    @@redirect_to = proc { login_path }
+    cattr_accessor :login_url
+    @@login_url = proc { login_path }
+
+    # Logged users will be redirect to this url
+    # when +redirect_logged_user+ helper is used.
+    cattr_accessor :logged_url
+    @@logged_url = proc { dashboard_path }
 
     # Reset session before saving the user session
     cattr_accessor :reset_session

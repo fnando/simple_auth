@@ -15,5 +15,9 @@ SimpleAuth.setup do |config|
   config.model = :user
 
   # Set the login url.
-  config.redirect_to = proc { login_path }
+  config.login_url = proc { login_path }
+
+  # Logged users will be redirect to this url
+  # when +redirect_logged_user+ helper is used.
+  config.logged_url = proc { root_path }
 end

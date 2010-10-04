@@ -8,12 +8,6 @@ This library only supports in-site authentication and won't implement OpenID, Fa
 Installation
 ------------
 
-As plugin:
-
-	script/plugin install git://github.com/fnando/simple_auth.git
-
-As gem:
-
 	sudo gem install simple_auth
 
 Then run `rails generate simple_auth:install` to copy the initializer file.
@@ -91,6 +85,11 @@ Here's some usage examples:
 	redirect_logged_user :only => [:index], :to => login_path
 	redirect_logged_user :except => [:public], :to => login_path
 
+You can skip the `:to` option if you set it globally on your initializer:
+
+	SimpleAuth::Config.logged_url = {:controller => "session", :action => "new"}
+	SimpleAuth::Config.logged_url = proc { login_path }
+
 To require a logged user, use the `require_logged_user` macro:
 
 	class DashboardController < ApplicationController
@@ -106,8 +105,8 @@ Here's some usage examples:
 
 You can skip the `:to` option if you set it globally on your initializer:
 
-	SimpleAuth::Config.redirect_to = {:controller => "session", :action => "new"}
-	SimpleAuth::Config.redirect_to = proc { login_path }
+	SimpleAuth::Config.login_url = {:controller => "session", :action => "new"}
+	SimpleAuth::Config.login_url = proc { login_path }
 
 There are some helpers:
 

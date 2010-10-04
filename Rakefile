@@ -18,7 +18,6 @@ begin
     gem.email = "fnando.vieira@gmail.com"
     gem.homepage = "http://github.com/fnando/simple_auth"
     gem.has_rdoc = true
-    gem.files = FileList["Rakefile", "README.markdown", "simple_auth.gemspec", "{config,lib,spec,templates}/**/*"]
   end
 
   Jeweler::GemcutterTasks.new

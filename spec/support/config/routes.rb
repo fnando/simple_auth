@@ -1,4 +1,4 @@
 SimpleAuth::Application.routes.draw do
-  get "dashboard", :to => "dashboard#index"
-  get "login", :to => "session#new"
+  get "dashboard",  :to => "dashboard#index"
+  get "login",      :to => "session#new"
 end

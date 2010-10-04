@@ -5,18 +5,22 @@
 
 Gem::Specification.new do |s|
   s.name = %q{simple_auth}
-  s.version = "0.1.8"
+  s.version = "1.0.0.beta.1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-09-08}
+  s.date = %q{2010-10-03}
   s.description = %q{When Authlogic & Devise are just too much.}
   s.email = %q{fnando.vieira@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
   ]
   s.files = [
-    "README.markdown",
+    ".gitignore",
+     ".rspec",
+     "Gemfile",
+     "Gemfile.lock",
+     "README.markdown",
      "Rakefile",
      "config/locales/en.yml",
      "config/locales/pt.yml",
@@ -37,20 +41,17 @@ Gem::Specification.new do |s|
      "spec/simple_auth/helper_spec.rb",
      "spec/simple_auth/session_spec.rb",
      "spec/spec_helper.rb",
-     "spec/support/Gemfile",
-     "spec/support/Gemfile.lock",
      "spec/support/app/controllers/application_controller.rb",
      "spec/support/app/controllers/dashboard_controller.rb",
      "spec/support/app/controllers/sample_controller.rb",
      "spec/support/app/controllers/session_controller.rb",
+     "spec/support/app/models/account.rb",
      "spec/support/app/models/user.rb",
      "spec/support/app/views/dashboard/index.erb",
      "spec/support/app/views/session/new.erb",
      "spec/support/config/boot.rb",
      "spec/support/config/database.yml",
      "spec/support/config/routes.rb",
-     "spec/support/log/development.log",
-     "spec/support/log/test.log",
      "templates/initializer.rb"
   ]
   s.homepage = %q{http://github.com/fnando/simple_auth}
@@ -70,6 +71,7 @@ Gem::Specification.new do |s|
      "spec/support/app/controllers/dashboard_controller.rb",
      "spec/support/app/controllers/sample_controller.rb",
      "spec/support/app/controllers/session_controller.rb",
+     "spec/support/app/models/account.rb",
      "spec/support/app/models/user.rb",
      "spec/support/config/boot.rb",
      "spec/support/config/routes.rb"
