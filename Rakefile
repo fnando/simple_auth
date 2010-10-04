@@ -18,6 +18,7 @@ begin
     gem.email = "fnando.vieira@gmail.com"
     gem.homepage = "http://github.com/fnando/simple_auth"
     gem.has_rdoc = true
+    gem.add_dependency "rails", ">= 3.0.0"
   end
 
   Jeweler::GemcutterTasks.new

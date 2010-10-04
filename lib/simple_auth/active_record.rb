@@ -1,5 +1,3 @@
-require "simple_auth/config" unless defined?(SimpleAuth::Config)
-
 module SimpleAuth
   module ActiveRecord
     def self.included(base)
@@ -110,6 +108,3 @@ module SimpleAuth
     end
   end
 end
-
-::ActiveRecord::Base.send :include, SimpleAuth::ActiveRecord::InstanceMethods
-::ActiveRecord::Base.send :extend, SimpleAuth::ActiveRecord::ClassMethods
