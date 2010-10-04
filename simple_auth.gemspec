@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{simple_auth}
-  s.version = "1.0.0.beta.1"
+  s.version = "1.0.1.beta.1"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-10-03}
+  s.date = %q{2010-10-04}
   s.description = %q{When Authlogic & Devise are just too much.}
   s.email = %q{fnando.vieira@gmail.com}
   s.extra_rdoc_files = [
@@ -34,7 +34,8 @@ Gem::Specification.new do |s|
      "lib/simple_auth/session.rb",
      "lib/simple_auth/version.rb",
      "simple_auth.gemspec",
-     "spec/controllers/action_controller_spec.rb",
+     "spec/controllers/redirect_logged_user_spec.rb",
+     "spec/controllers/require_logged_user_spec.rb",
      "spec/schema.rb",
      "spec/simple_auth/active_record_spec.rb",
      "spec/simple_auth/config_spec.rb",
@@ -42,9 +43,6 @@ Gem::Specification.new do |s|
      "spec/simple_auth/session_spec.rb",
      "spec/spec_helper.rb",
      "spec/support/app/controllers/application_controller.rb",
-     "spec/support/app/controllers/dashboard_controller.rb",
-     "spec/support/app/controllers/sample_controller.rb",
-     "spec/support/app/controllers/session_controller.rb",
      "spec/support/app/models/account.rb",
      "spec/support/app/models/user.rb",
      "spec/support/app/views/dashboard/index.erb",
@@ -60,7 +58,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A simple authentication system for Rails apps}
   s.test_files = [
-    "spec/controllers/action_controller_spec.rb",
+    "spec/controllers/redirect_logged_user_spec.rb",
+     "spec/controllers/require_logged_user_spec.rb",
      "spec/schema.rb",
      "spec/simple_auth/active_record_spec.rb",
      "spec/simple_auth/config_spec.rb",
@@ -68,9 +67,6 @@ Gem::Specification.new do |s|
      "spec/simple_auth/session_spec.rb",
      "spec/spec_helper.rb",
      "spec/support/app/controllers/application_controller.rb",
-     "spec/support/app/controllers/dashboard_controller.rb",
-     "spec/support/app/controllers/sample_controller.rb",
-     "spec/support/app/controllers/session_controller.rb",
      "spec/support/app/models/account.rb",
      "spec/support/app/models/user.rb",
      "spec/support/config/boot.rb",
