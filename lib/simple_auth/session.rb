@@ -88,6 +88,10 @@ module SimpleAuth
       record.nil?
     end
 
+    def persisted?
+      !new_record?
+    end
+
     def valid?
       if record
         true
