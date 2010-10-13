@@ -4,20 +4,18 @@ module SimpleAuth
       require "simple_auth/generator"
     end
 
-    config.after_initialize do
-      ActiveSupport.on_load(:action_controller) do
+    initializer "simple_auth.initialize" do |app|
+      ::ActionController::Base.instance_eval do
         include SimpleAuth::ActionController
         helper SimpleAuth::Helper
         prepend_before_filter :activate_simple_auth
         helper_method :current_user, :current_session, :logged_in?
       end
 
-      ActiveSupport.on_load(:active_record) do
+      ::ActiveRecord::Base.instance_eval do
         include SimpleAuth::ActiveRecord
       end
-    end
 
-    initializer "simple_auth.initialize" do |app|
       ::I18n.load_path += Dir[File.dirname(__FILE__) + "/../../config/locales/*.yml"]
     end
   end

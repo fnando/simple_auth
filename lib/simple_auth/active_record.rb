@@ -74,12 +74,12 @@ module SimpleAuth
     end
 
     module ClassMethods
-      # Receive a credential and a password and try to authenticate the specified user.
-      # If the credential is valid, then an user is returned; otherwise nil is returned.
+      # Find user by its credential.
       #
-      #   User.authenticate "johndoe", "test"
-      #   User.authenticate "john@doe.com", "test"
-      def authenticate(credential, password)
+      #   User.find_by_credential "john@doe.com" # using e-mail
+      #   User.find_by_credential "john" # using username
+      #
+      def find_by_credential(credential)
         # Build a hash that will be passed to the finder
         options = {:conditions => [[], {}]}
 
@@ -94,7 +94,28 @@ module SimpleAuth
         options[:conditions][0] = options[:conditions][0].join(" OR ")
 
         # Find the record using the conditions we built
-        record = SimpleAuth::Config.model_class.first(options)
+        SimpleAuth::Config.model_class.first(options)
+      end
+
+      # Find user by its credential. If no user is found, raise
+      # ActiveRecord::RecordNotFound exception.
+      #
+      #   User.find_by_credential! "john@doe.com"
+      #
+      def find_by_credential!(credential)
+        record = find_by_credential(credential)
+        raise ::ActiveRecord::RecordNotFound, "couldn't find #{SimpleAuth::Config.model} using #{credential.inspect} as credential" unless record
+        record
+      end
+
+      # Receive a credential and a password and try to authenticate the specified user.
+      # If the credential is valid, then an user is returned; otherwise nil is returned.
+      #
+      #   User.authenticate "johndoe", "test"
+      #   User.authenticate "john@doe.com", "test"
+      #
+      def authenticate(credential, password)
+        record = find_by_credential(credential)
 
         # If no record has been found
         return nil unless record

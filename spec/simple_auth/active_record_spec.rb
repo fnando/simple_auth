@@ -121,5 +121,20 @@ describe SimpleAuth::ActiveRecord do
     it "should not authenticate using wrong password" do
       User.authenticate("johndoe", "invalid").should be_nil
     end
+
+    it "should return nil when no user has been found" do
+      User.find_by_credential("invalid").should be_nil
+    end
+
+    it "should raise error when no user has been found" do
+      expect {
+        User.find_by_credential!("invalid")
+      }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should return user" do
+      User.find_by_credential(subject.email).should == subject
+      User.find_by_credential!(subject.email).should == subject
+    end
   end
 end
