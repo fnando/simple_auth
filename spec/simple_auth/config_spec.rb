@@ -11,11 +11,6 @@ describe SimpleAuth::Config do
     it "should not respond to helper methods" do
       Account.should_not respond_to(:authenticate)
     end
-
-    it "should respond to helper methods after setting model on setup" do
-      SimpleAuth.setup {|c| c.model = :account}
-      Account.should respond_to(:authenticate)
-    end
   end
 
   it "should use [:email, :login] as credential attributes" do

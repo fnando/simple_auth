@@ -38,17 +38,15 @@ Your user model should have the attributes `password_hash` and `password_salt`. 
 	  end
 	end
 
-If your user model is other than `User`, you have to set it in your `config/initializer/simple_auth.rb` initializer file.
-You can also set up the credentials attributes and crypters.
+In your model, use the `authentication` macro.
 
-	SimpleAuth.setup do |config|
-	  config.model = :account
-	  config.credentials = [:username]
+	class User < ActiveRecord::Base
+	  authentication
 	end
 
 This will add some callbacks and password validations. It will also inject helper methods like `Model.authenticate`.
 
-After you set up the model, you can go the controller.
+After you set up the model, you can go to the controller.
 
 	class SessionsController < ApplicationController
 	  def new
@@ -120,13 +118,6 @@ If you're having problems to use any helper, include the module <tt>SimpleAuth::
 	module ApplicationHelper
 	  include SimpleAuth::Helper
 	end
-
-Sinatra support
----------------
-
-Sinatra is not fully supported. For now, you can only use the ActiveRecord part:
-
-	require "simple_auth/active_record"
 
 Troubleshooting
 ---------------

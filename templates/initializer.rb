@@ -11,9 +11,6 @@ SimpleAuth.setup do |config|
   # Set which attributes will be used for authentication.
   config.credentials = [:email, :login]
 
-  # Set the User model that should be used for authentication.
-  config.model = :user
-
   # Set the login url.
   config.login_url = proc { login_path }
 

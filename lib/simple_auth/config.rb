@@ -2,7 +2,6 @@ module SimpleAuth
   # Add a shortcut to SimpleAuth::Config
   def self.setup(&block)
     yield SimpleAuth::Config if block_given?
-    Config.model_class.authentication if Config.model
   end
 
   class Config
