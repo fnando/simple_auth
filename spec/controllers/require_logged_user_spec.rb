@@ -19,9 +19,18 @@ describe ApplicationController do
       end
     end
 
+    it "should return the request url" do
+      get :index, :some => "param"
+      controller.send(:return_to, "/dashboard").should == "/stub_resources?some=param"
+    end
+
+    it "should return the default url" do
+      controller.send(:return_to, "/dashboard").should == "/dashboard"
+    end
+
     it "should set return to" do
-      get :index
-      session[:return_to].should == "/stub_resources"
+      get :index, :some => "param"
+      session[:return_to].should == "/stub_resources?some=param"
     end
 
     it "should set warning message" do

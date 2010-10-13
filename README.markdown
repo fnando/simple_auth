@@ -57,7 +57,7 @@ After you set up the model, you can go to the controller.
 	    @user_session = SimpleAuth::Session.new(params[:session])
 
 	    if @user_session.save
-	      redirect_to dashboard_path
+	      redirect_to return_to(dashboard_path)
 	    else
 	      flash[:alert] = "Invalid username or password"
 	      render :new
@@ -69,6 +69,8 @@ After you set up the model, you can go to the controller.
 	    redirect_to root_path
 	  end
 	end
+
+The `return_to` helper will give you the requested url (before the user logged in) or the default url.
 
 You can restrict access by using 2 macros:
 

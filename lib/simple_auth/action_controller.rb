@@ -9,6 +9,12 @@ module SimpleAuth
 
     module InstanceMethods
       private
+      def return_to(url = nil, &block)
+        url = session.fetch("return_to", url)
+        url = instance_eval(&block) if block_given?
+        url
+      end
+
       def current_session
         @current_session ||= SimpleAuth::Session.find
       end
