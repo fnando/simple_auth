@@ -37,6 +37,7 @@ module SimpleAuth
 
     def self.find
       session = new
+      return unless session.controller.session[:record_id]
       session.record = session.model.find_by_id(session.controller.session[:record_id])
 
       if session.record
