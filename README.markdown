@@ -114,6 +114,8 @@ There are some helpers:
 	current_user			# controller & views
 	current_session         # controller & views
 	when_logged(&block)		# views
+	find_by_credential      # model
+	find_by_credential!     # model
 
 If you're having problems to use any helper, include the module <tt>SimpleAuth::Helper</tt> on your <tt>ApplicationHelper</tt>.
 
