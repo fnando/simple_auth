@@ -13,10 +13,18 @@ describe SimpleAuth::Session do
 
     @session = Hash.new
     @controller = ActionController::Base.new
-    @controller.stub!(:session).and_return(@session)
+    @controller.stub :session => @session
 
     SimpleAuth::Config.controller = @controller
     @user_session = SimpleAuth::Session.new(:credential => "johndoe", :password => "test")
+  end
+
+  it "should not raise when trying to find a session without activating controller" do
+    SimpleAuth::Config.controller = nil
+
+    expect {
+      SimpleAuth::Session.find.should be_nil
+    }.to_not raise_error
   end
 
   context "with valid credentials" do
@@ -34,12 +42,18 @@ describe SimpleAuth::Session do
       @user_session.should_not be_new_record
     end
 
-    it "should find record" do
-      @user_session.record.should == @user
+    it "should be invalid when record is not authorized" do
+      @user_session.record.stub :authorized? => false
+      @user_session.should_not be_valid
     end
 
-    it "should be a valid session" do
+    it "should be valid when record is authorized" do
+      @user_session.record.stub :authorized? => true
       @user_session.should be_valid
+    end
+
+    it "should find record" do
+      @user_session.record.should == @user
     end
 
     it "should set record_id on session" do

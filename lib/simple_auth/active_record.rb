@@ -53,6 +53,10 @@ module SimpleAuth
         @password_changed == true
       end
 
+      def authorized?
+        true
+      end
+
       private
       def encrypt_password
         self.password_salt = SimpleAuth::Config.salt.call(self)

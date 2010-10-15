@@ -46,6 +46,23 @@ In your model, use the `authentication` macro.
 
 This will add some callbacks and password validations. It will also inject helper methods like `Model.authenticate`.
 
+Session is valid only when both `Model#authorized?` and `Controller#authorized?` methods return `true`, which is the default behavior. You can override these methods with your own rules:
+
+	class User < ActiveRecord::Base
+	  authentication
+
+	  def authorized?
+	    deleted_at.nil?
+	  end
+	end
+
+	class Admin::DashboardController < ApplicationController
+	  private
+	  def authorized?
+	    current_user.admin?
+	  end
+	end
+
 After you set up the model, you can go to the controller.
 
 	class SessionsController < ApplicationController
@@ -117,7 +134,7 @@ There are some helpers:
 	find_by_credential      # model
 	find_by_credential!     # model
 
-If you're having problems to use any helper, include the module <tt>SimpleAuth::Helper</tt> on your <tt>ApplicationHelper</tt>.
+If you're having problems to use any helper, include the module `SimpleAuth::Helper` on your `ApplicationHelper`.
 
 	module ApplicationHelper
 	  include SimpleAuth::Helper

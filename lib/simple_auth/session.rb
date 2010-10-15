@@ -37,7 +37,7 @@ module SimpleAuth
 
     def self.find
       session = new
-      return unless session.controller.session[:record_id]
+      return unless session.controller && session.controller.session[:record_id]
       session.record = session.model.find_by_id(session.controller.session[:record_id])
 
       if session.record
@@ -48,13 +48,13 @@ module SimpleAuth
     end
 
     def self.create(options = {})
-      returning new(options) do |session|
+      new(options).tap do |session|
         session.save
       end
     end
 
     def self.create!(options = {})
-      returning new(options) do |session|
+      new(options).tap do |session|
         session.save!
       end
     end
@@ -94,7 +94,7 @@ module SimpleAuth
     end
 
     def valid?
-      if record
+      if record && record.authorized?
         true
       else
         errors.add_to_base I18n.translate("simple_auth.sessions.invalid_credentials")

@@ -38,9 +38,16 @@ describe ApplicationController do
       flash[:alert].should == "You need to be logged"
     end
 
-    it "should redirect when user is not authorized" do
-      @controller.should_receive(:logged_in?).and_return(true)
+    it "should redirect when user is not authorized on controller level" do
+      session[:record_id] = user.id
       @controller.should_receive(:authorized?).and_return(false)
+
+      get :index
+      response.should redirect_to("/login")
+    end
+
+    it "should redirect when session is not valid" do
+      session[:record_id] = "invalid"
 
       get :index
       response.should redirect_to("/login")

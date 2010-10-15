@@ -58,9 +58,7 @@ module SimpleAuth
       def require_logged_user(options = {})
         before_filter options.except(:to) do |controller|
           controller.instance_eval do
-            unless logged_in? && authorized?
-              flash[:alert] = I18n.translate("simple_auth.sessions.need_to_be_logged")
-
+            unless current_session && current_session.valid? && authorized?
               if request.respond_to?(:fullpath)
                 return_to = request.fullpath
               else
@@ -68,7 +66,7 @@ module SimpleAuth
               end
 
               session[:return_to] = return_to if request.get?
-              redirect_to simple_auth_url_for(:login_url, controller, options[:to])
+              redirect_to simple_auth_url_for(:login_url, controller, options[:to]), :alert => t("simple_auth.sessions.need_to_be_logged")
             end
           end
         end
