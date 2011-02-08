@@ -1,11 +1,5 @@
-pt: &pt
+pt-BR:
   simple_auth:
     sessions:
       need_to_be_logged: "Você precisa estar logado"
       invalid_credentials: "Usuário ou senha inválidos"
-
-pt-BR:
-  <<: *pt
-
-pt-PT:
-  <<: *pt

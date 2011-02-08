@@ -140,6 +140,16 @@ If you're having problems to use any helper, include the module `SimpleAuth::Hel
 	  include SimpleAuth::Helper
 	end
 
+### Translations
+
+These are the translations you'll need:
+
+	en:
+	  simple_auth:
+	    sessions:
+	      need_to_be_logged: "You need to be logged"
+	      invalid_credentials: "Invalid username or password"
+
 Troubleshooting
 ---------------
 

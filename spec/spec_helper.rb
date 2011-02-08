@@ -7,6 +7,8 @@ require "rspec/rails"
 # Load database schema
 load File.dirname(__FILE__) + "/schema.rb"
 
+I18n.load_path += Dir[File.dirname(__FILE__) + "/../locales/*.yml"]
+
 # Restore default configuration
 RSpec.configure do |config|
   config.before :each do
