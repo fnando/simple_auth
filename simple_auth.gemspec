@@ -20,5 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.0.0"
   s.add_development_dependency "sqlite3-ruby"
   s.add_development_dependency "rspec-rails", "~> 2.5.0"
+  s.add_development_dependency "mongo_mapper", "~> 0.8.6"
+  s.add_development_dependency "bson_ext"
   s.add_development_dependency "ruby-debug19"
 end

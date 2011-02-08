@@ -7,12 +7,6 @@ describe SimpleAuth::Config do
     end
   end
 
-  context "injecting behavior" do
-    it "should not respond to helper methods" do
-      Account.should_not respond_to(:authenticate)
-    end
-  end
-
   it "should use [:email, :login] as credential attributes" do
     SimpleAuth::Config.credentials.should == [:email, :login]
   end

@@ -12,11 +12,7 @@ module SimpleAuth
         helper_method :current_user, :current_session, :logged_in?
       end
 
-      ::ActiveRecord::Base.instance_eval do
-        include SimpleAuth::ActiveRecord
-      end
-
-      ::I18n.load_path += Dir[File.dirname(__FILE__) + "/../../config/locales/*.yml"]
+      ::ActiveRecord::Base.class_eval { include SimpleAuth::Orm::ActiveRecord } if defined?(::ActiveRecord)
     end
   end
 end

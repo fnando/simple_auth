@@ -140,6 +140,18 @@ If you're having problems to use any helper, include the module `SimpleAuth::Hel
 	  include SimpleAuth::Helper
 	end
 
+### MongoMapper support
+
+You can use SimpleAuth with MongoMapper. Just include the module `SimpleAuth::Orm::MongoMapper` and
+set up your model with the `authentication` macro.
+
+	class User
+	  include MongoMapper::Document
+	  include SimpleAuth::Orm::MongoMapper
+
+	  authentication
+	end
+
 ### Translations
 
 These are the translations you'll need:
