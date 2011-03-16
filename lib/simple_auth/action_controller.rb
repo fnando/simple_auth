@@ -10,7 +10,7 @@ module SimpleAuth
     module InstanceMethods
       private
       def return_to(url = nil, &block)
-        url = session.fetch("return_to", url)
+        url = session.fetch(:return_to, url)
         url = instance_eval(&block) if block_given?
         url
       end
@@ -66,6 +66,8 @@ module SimpleAuth
               end
 
               session[:return_to] = return_to if request.get?
+
+              SimpleAuth::Session.destroy!
               redirect_to simple_auth_url_for(:login_url, controller, options[:to]), :alert => t("simple_auth.sessions.need_to_be_logged")
             end
           end

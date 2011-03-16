@@ -10,6 +10,10 @@ describe ApplicationController do
     )
   }
 
+  before do
+    session[:user_id] = {}
+  end
+
   context "redirecting to requested page" do
     controller do
       require_logged_user :to => "/login"
@@ -17,6 +21,24 @@ describe ApplicationController do
       def index
         render :text => "Rendered"
       end
+    end
+
+    it "should keep other session data" do
+      session[:skip_intro] = true
+      get :index
+      session[:skip_intro].should be_true
+    end
+
+    it "should remove record id from session" do
+      session[:user_id] = 0
+      get :index
+      session.should_not have_key(:user)
+    end
+
+    it "should remove session id from session" do
+      session[:session_id] = "xSQR"
+      get :index
+      session.should_not have_key(:session_id)
     end
 
     it "should return the request url" do
@@ -39,7 +61,7 @@ describe ApplicationController do
     end
 
     it "should redirect when user is not authorized on controller level" do
-      session[:record_id] = user.id
+      session[:user_id] = user.id
       @controller.should_receive(:authorized?).and_return(false)
 
       get :index
@@ -47,7 +69,7 @@ describe ApplicationController do
     end
 
     it "should redirect when session is not valid" do
-      session[:record_id] = "invalid"
+      session[:user_id] = "invalid"
 
       get :index
       response.should redirect_to("/login")
@@ -109,12 +131,9 @@ describe ApplicationController do
       end
     end
 
-    before do
-      session[:record_id] = user.id
-      get :index
-    end
-
     it "should render page" do
+      session[:user_id] = user.id
+      get :index
       response.body.should == "Rendered"
     end
   end

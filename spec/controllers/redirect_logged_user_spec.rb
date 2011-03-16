@@ -21,7 +21,7 @@ describe ApplicationController do
       end
 
       it "should redirect logged users" do
-        session[:record_id] = user.id
+        session[:user_id] = user.id
         get :index
 
         response.code.should match(/302/)
@@ -39,7 +39,7 @@ describe ApplicationController do
       end
 
       it "should redirect logged users" do
-        session[:record_id] = user.id
+        session[:user_id] = user.id
         get :index
 
         response.code.should match(/302/)
@@ -58,7 +58,7 @@ describe ApplicationController do
 
       it "should redirect logged users" do
         SimpleAuth::Config.logged_url = proc { dashboard_path }
-        session[:record_id] = user.id
+        session[:user_id] = user.id
         get :index
 
         response.code.should match(/302/)
@@ -76,7 +76,7 @@ describe ApplicationController do
       end
 
       it "should render page" do
-        session[:record_id] = nil
+        session[:user_id] = nil
         get :index
 
         response.code.should match(/200/)

@@ -7,7 +7,7 @@ module SimpleAuth
     attr_accessor :record
     attr_accessor :errors
 
-    class Errors
+    class Errors # :nodoc:all
       attr_accessor :errors
 
       def add_to_base(message)
@@ -35,10 +35,32 @@ module SimpleAuth
       end
     end
 
+    def self.session_key
+      "#{SimpleAuth::Config.model.to_s}_id".to_sym
+    end
+
+    def self.record_id
+      controller && controller.session[session_key]
+    end
+
+    def self.backup(&block)
+      backup = controller.session.to_hash.reject do |name, value|
+        rejected = [:session_id, session_key].include?(name.to_sym) || SimpleAuth::Config.wipeout_session && name.to_s =~ /^#{SimpleAuth::Config.model}_/
+        controller.session.delete(name) if rejected
+        rejected
+      end
+
+      yield
+
+      backup.each do |name, value|
+        controller.session[name.to_sym] = value
+      end
+    end
+
     def self.find
+      return unless controller && record_id
       session = new
-      return unless session.controller && session.controller.session[:record_id]
-      session.record = session.model.find_by_id(session.controller.session[:record_id])
+      session.record = session.model.find_by_id(record_id)
 
       if session.record
         session
@@ -59,11 +81,18 @@ module SimpleAuth
       end
     end
 
+    def self.controller
+      SimpleAuth::Config.controller
+    end
+
     def self.destroy!
-      controller = SimpleAuth::Config.controller
-      controller.session[:record_id] = nil
+      [:session_id, session_key].each {|name| controller.session.delete(name) }
+
       controller.instance_variable_set("@current_user", nil)
       controller.instance_variable_set("@current_session", nil)
+
+      backup { controller.reset_session }
+
       true
     end
 
@@ -98,7 +127,7 @@ module SimpleAuth
         true
       else
         errors.add_to_base I18n.translate("simple_auth.sessions.invalid_credentials")
-        controller.session[:record_id] = nil
+        self.class.destroy!
         false
       end
     end
@@ -108,12 +137,10 @@ module SimpleAuth
     end
 
     def save
-      if valid?
-        controller.send(:reset_session) if SimpleAuth::Config.reset_session
-        controller.session[:record_id] = record.id
-      end
+      self.class.destroy!
 
-      controller.session[:record_id] != nil
+      controller.session[self.class.session_key] = record.id if valid?
+      controller.session[self.class.session_key] != nil
     end
 
     def save!

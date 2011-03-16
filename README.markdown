@@ -175,7 +175,7 @@ Dirty, but it works. Here's the ticket for this issue: [Issue #1290](https://rai
 To-Do
 -----
 
-* Write README
+* Support BasicAuth authentication
 
 Maintainer
 ----------

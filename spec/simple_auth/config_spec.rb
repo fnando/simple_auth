@@ -26,4 +26,15 @@ describe SimpleAuth::Config do
   specify "salt should return a 64-char long salt" do
     SimpleAuth::Config.salt.call(nil).size.should == 64
   end
+
+  specify "wipeout session should be disabled" do
+    SimpleAuth::Config.wipeout_session.should be_false
+  end
+
+  specify "deprecated reset_session accessor" do
+    Kernel.should_receive(:warn).twice
+
+    SimpleAuth::Config.reset_session = true
+    SimpleAuth::Config.reset_session
+  end
 end

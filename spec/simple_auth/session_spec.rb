@@ -13,7 +13,7 @@ describe SimpleAuth::Session do
 
     @session = Hash.new
     @controller = ActionController::Base.new
-    @controller.stub :session => @session
+    @controller.stub :session => @session, :reset_session => nil
 
     SimpleAuth::Config.controller = @controller
     @user_session = SimpleAuth::Session.new(:credential => "johndoe", :password => "test")
@@ -25,6 +25,15 @@ describe SimpleAuth::Session do
     expect {
       SimpleAuth::Session.find.should be_nil
     }.to_not raise_error
+  end
+
+  it "should return session key" do
+    SimpleAuth::Session.session_key == :user_id
+  end
+
+  it "should return record id" do
+    @session[:user_id] = 42
+    SimpleAuth::Session.record_id == 42
   end
 
   context "with valid credentials" do
@@ -56,31 +65,32 @@ describe SimpleAuth::Session do
       @user_session.record.should == @user
     end
 
-    it "should set record_id on session" do
-      @session[:record_id].should == @user.id
-    end
-
     it "should be saved" do
       @user_session.save.should be_true
+    end
+
+    it "should reset session before saving" do
+      @session[:session_id] = "xWA1"
+      @user_session.save
+      @session.should_not have_key(:session_id)
     end
 
     it "should automatically save session when calling create!" do
       @user_session = SimpleAuth::Session.create!(:credential => "johndoe", :password => "test")
       @user_session.should be_valid
       @user_session.record.should == @user
-      @session[:record_id].should == @user.id
-    end
-
-    it "should reset session" do
-      SimpleAuth::Config.reset_session = true
-      SimpleAuth::Config.controller.should_receive(:reset_session)
-      @user_session.save
+      @session[:user_id].should == @user.id
     end
 
     it "should destroy session" do
       @user_session.destroy.should be_true
       @user_session.record.should be_nil
-      @session[:record_id].should be_nil
+      @session.should_not have_key(:user)
+    end
+
+    it "should initialize record session" do
+      @user_session.save
+      @session[:user_id].should == @user.id
     end
   end
 
@@ -91,15 +101,15 @@ describe SimpleAuth::Session do
     end
 
     it "should unset previous record id when is not valid" do
-      @session[:record_id] = 1
+      @session[:user_id] = 1
       @user_session.should_not be_valid
-      @session[:record_id].should be_nil
+      @session.should_not have_key(:user)
     end
 
     it "should unset previous record id when is not saved" do
-      @session[:record_id] = 1
+      @session[:user_id] = 1
       @user_session.save.should be_false
-      @session[:record_id].should be_nil
+      @session.should_not have_key(:user)
     end
 
     it "should be new record" do
@@ -137,8 +147,8 @@ describe SimpleAuth::Session do
       @user_session.should_not be_valid
     end
 
-    it "should unset record_id from session" do
-      @session[:record_id].should be_nil
+    it "should unset record store from session" do
+      @session.should_not have_key(:user)
     end
 
     it "should not be saved" do
@@ -157,14 +167,37 @@ describe SimpleAuth::Session do
   context "when destroying session" do
     before do
       @user_session.save!
-      @user_session.destroy
     end
 
-    it "should unset record_id from session" do
-      @session[:record_id].should be_nil
+    it "should remove record session" do
+      @user_session.destroy
+      @session.should_not have_key(:user_id)
+    end
+
+    it "should keep keys composed by user_*" do
+      SimpleAuth::Config.wipeout_session = false
+
+      @session[:user_friends_count] = 42
+      @user_session.destroy
+
+      @session[:user_friends_count].should == 42
+    end
+
+    it "should wipe out keys composed by user_*" do
+      SimpleAuth::Config.wipeout_session = true
+
+      @session[:user_friends_count] = 100
+      @session[:user_preferred_number] = 42
+
+      @user_session.destroy
+
+      @session.should_not have_key(:user_friends_count)
+      @session.should_not have_key(:user_preferred_number)
     end
 
     it "should unset current_user instance variable" do
+      @user_session.destroy
+
       SimpleAuth::Config.controller.send(:current_user).should be_nil
       SimpleAuth::Config.controller.instance_variable_get("@current_user").should be_nil
       SimpleAuth::Config.controller.instance_variable_get("@current_session").should be_nil
