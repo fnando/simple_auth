@@ -10,7 +10,7 @@ module SimpleAuth
     module InstanceMethods
       private
       def return_to(url = nil, &block)
-        url = session.fetch(:return_to, url)
+        url = session.delete(:return_to) || url
         url = instance_eval(&block) if block_given?
         url
       end

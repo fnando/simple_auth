@@ -55,6 +55,12 @@ describe ApplicationController do
       session[:return_to].should == "/stub_resources?some=param"
     end
 
+    it "should remove return to from session" do
+      get :index, :some => "param"
+      controller.send(:return_to, "/dashboard")
+      session[:return_to].should be_nil
+    end
+
     it "should set warning message" do
       get :index
       flash[:alert].should == "You need to be logged"
