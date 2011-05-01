@@ -26,6 +26,5 @@ SimpleAuth.setup do |config|
   # Additionally, you can enable this option to remove any other key composed by
   # <tt>#{SimpleAuth::Config.model}_*</tt>.
   #
-  cattr_accessor :wipeout_session
-  @@wipeout_session = false
+  # config.wipeout_session = true
 end
