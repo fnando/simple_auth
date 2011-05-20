@@ -2,6 +2,14 @@ module SimpleAuth
   module Orm
     module Base
       module InstanceMethods
+        def require_password!
+          @require_password = true
+        end
+
+        def require_password?
+          @require_password
+        end
+
         def password=(password)
           @password_changed = true
           @password = password
@@ -28,10 +36,13 @@ module SimpleAuth
           # Mark password as unchanged after erasing passwords,
           # or it will be marked as changed anyway
           @password_changed = false
+
+          # Also erase require password
+          @require_password = false
         end
 
         def validate_password?
-          new_record? || password_changed?
+          new_record? || password_changed? || require_password?
         end
       end
 

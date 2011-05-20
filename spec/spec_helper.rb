@@ -112,6 +112,26 @@ shared_examples_for "orm" do
       subject.should be_valid
     end
 
+    it "should require password when explicitly said so" do
+      subject.require_password!
+      subject.should_not be_valid
+      subject.errors[:password].should_not be_empty
+    end
+
+    it "should require password" do
+      subject.require_password?.should be_false
+      subject.require_password!
+      subject.require_password?.should be_true
+    end
+
+    it "should not require password after saving" do
+      subject.require_password!
+      subject.password = "newpass"
+      subject.password_confirmation = "newpass"
+      subject.save.should be_true
+      subject.require_password?.should be_false
+    end
+
     it "should require password confirmation when it has changed" do
       subject.password = "newpass"
       subject.should_not be_valid
