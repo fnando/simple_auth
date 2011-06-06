@@ -169,6 +169,12 @@ describe SimpleAuth::Session do
       @user_session.save!
     end
 
+    it "should keep return to url" do
+      @session[:return_to] = "/some/path"
+      @user_session.destroy
+      @session[:return_to].should == "/some/path"
+    end
+
     it "should remove record session" do
       @user_session.destroy
       @session.should_not have_key(:user_id)
