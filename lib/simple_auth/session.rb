@@ -127,7 +127,7 @@ module SimpleAuth
         true
       else
         errors.add_to_base I18n.translate("simple_auth.sessions.invalid_credentials")
-        self.class.destroy!
+        #self.class.destroy!
         false
       end
     end
@@ -137,7 +137,7 @@ module SimpleAuth
     end
 
     def save
-      self.class.destroy!
+      #self.class.destroy! if self.class
 
       controller.session[self.class.session_key] = record.id if valid?
       controller.session[self.class.session_key] != nil
@@ -155,7 +155,7 @@ module SimpleAuth
       @record = nil
       @credential = nil
       @password = nil
-      self.class.destroy!
+      #self.class.destroy! if self.class
     end
   end
 end
