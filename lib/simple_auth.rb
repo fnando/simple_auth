@@ -1,4 +1,8 @@
 require "digest/sha2"
+
+require "rails/railtie"
+require "active_support/all"
+
 require "simple_auth/railtie"
 require "simple_auth/config"
 require "simple_auth/action_controller"

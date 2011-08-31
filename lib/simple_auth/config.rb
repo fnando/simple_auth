@@ -27,7 +27,7 @@ module SimpleAuth
     # the ActiveRecord instance as block parameter.
     cattr_accessor :salt
     @@salt = proc do |record|
-      Digest::SHA256.hexdigest [Time.to_s, ActiveSupport::SecureRandom.hex(32)].join("--")
+      Digest::SHA256.hexdigest [Time.to_s, SecureRandom.hex(32)].join("--")
     end
 
     # Set which attributes will be used for authentication.

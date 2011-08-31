@@ -1,4 +1,10 @@
 ENV["RAILS_ENV"] = "test"
+require "bundler"
+Bundler.setup(:default, :development, :test)
+Bundler.require
+
+I18n.load_path += Dir[File.expand_path("../../locales/*.yml", __FILE__)]
+
 require "rails"
 require "simple_auth"
 require File.dirname(__FILE__) + "/support/config/boot"
@@ -11,8 +17,6 @@ load File.dirname(__FILE__) + "/schema.rb"
 # Set up MongoDB connection
 MongoMapper.connection = Mongo::Connection.new("localhost")
 MongoMapper.database = "simple_auth"
-
-I18n.load_path += Dir[File.dirname(__FILE__) + "/../locales/*.yml"]
 
 # Restore default configuration
 RSpec.configure do |config|
