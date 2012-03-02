@@ -172,11 +172,6 @@ You may receive strange errors related to `can't dup NilClass` or `You have a ni
 
 Dirty, but it works. Here's the ticket for this issue: [Issue #1290](https://rails.lighthouseapp.com/projects/8994/tickets/1290-activerecord-raises-randomly-apparently-a-timezone-issue#ticket-1290-30)
 
-To-Do
------
-
-* Support BasicAuth authentication
-
 Maintainer
 ----------
 
