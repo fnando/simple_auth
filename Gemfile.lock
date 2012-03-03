@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple_auth (1.4.3)
+    simple_auth (1.4.4)
 
 GEM
   remote: http://rubygems.org/
