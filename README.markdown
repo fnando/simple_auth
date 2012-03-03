@@ -3,7 +3,7 @@ Simple Auth
 
 SimpleAuth is an authentication library to be used when Authlogic & Devise are just too complicated.
 
-This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like.
+This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like. Rails 3.0+ required.
 
 Installation
 ------------

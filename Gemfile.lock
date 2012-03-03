@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     simple_auth (1.4.3)
-      rails (>= 3.0.0)
 
 GEM
   remote: http://rubygems.org/
@@ -118,6 +117,7 @@ PLATFORMS
 DEPENDENCIES
   bson_ext
   mongo_mapper (~> 0.9.1)
+  rails
   rspec-rails (~> 2.5)
   simple_auth!
   sqlite3-ruby
