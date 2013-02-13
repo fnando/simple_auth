@@ -72,13 +72,13 @@ module SimpleAuth
         #   User.authenticate "john@doe.com", "test"
         #
         def authenticate(credential, password)
-          record = find_by_credential(credential)
+          record = find_by_credential(credential.to_s)
 
           # If no record has been found
           return nil unless record
 
           # Compare password
-          return nil unless record.password_hash == SimpleAuth::Config.crypter.call(password, record.password_salt)
+          return nil unless record.password_hash == SimpleAuth::Config.crypter.call(password.to_s, record.password_salt)
 
           # Yay! Everything matched so return record.
           record
