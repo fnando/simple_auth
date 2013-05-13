@@ -52,21 +52,21 @@ module SimpleAuth
         #   User.find_by_credential "john" # using username
         #
         def find_by_credential(credential)
-          # Build a hash that will be passed to the finder
-          options = {:conditions => [[], {}]}
+          # Build a array that will be passed to the finder
+          options = [[], {}]
 
           # Iterate each attribute that should be used as credential
           # and set it to the finder conditions hash
           SimpleAuth::Config.credentials.each do |attr_name|
-            options[:conditions][0] << "#{attr_name} = :#{attr_name}"
-            options[:conditions][1][attr_name] = credential
+            options[0] << "#{attr_name} = :#{attr_name}"
+            options[1][attr_name] = credential
           end
 
           # Join the attributes in OR query
-          options[:conditions][0] = options[:conditions][0].join(" OR ")
+          options[0] = options[0].join(" OR ")
 
           # Find the record using the conditions we built
-          SimpleAuth::Config.model_class.first(options)
+          SimpleAuth::Config.model_class.where(options).first
         end
 
         # Find user by its credential. If no user is found, raise
