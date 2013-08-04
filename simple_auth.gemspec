@@ -1,6 +1,4 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "simple_auth/version"
+require "./lib/simple_auth/version"
 
 Gem::Specification.new do |s|
   s.name        = "simple_auth"
@@ -17,9 +15,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency "rails"
+  s.add_development_dependency "rails", ">= 4.0.0"
   s.add_development_dependency "sqlite3-ruby"
-  s.add_development_dependency "rspec-rails", "~> 2.5"
-  s.add_development_dependency "mongo_mapper", "~> 0.9.1"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "mongo_mapper"
   s.add_development_dependency "bson_ext"
 end
