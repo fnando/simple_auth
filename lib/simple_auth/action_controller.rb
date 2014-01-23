@@ -24,7 +24,7 @@ module SimpleAuth
       end
 
       def authorized?
-        true
+        current_user.try(:authorized?)
       end
 
       def logged_in?

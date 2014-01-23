@@ -12,7 +12,7 @@ module SimpleAuth
         helper_method :current_user, :current_session, :logged_in?
       end
 
-      ::ActiveRecord::Base.class_eval { include SimpleAuth::Orm::ActiveRecord } if defined?(::ActiveRecord)
+      ::ActiveRecord::Base.class_eval { include SimpleAuth::ActiveRecord }
     end
   end
 end

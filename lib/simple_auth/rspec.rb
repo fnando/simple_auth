@@ -14,9 +14,9 @@ module SimpleAuth
     #
     def simple_auth(options = {})
       options.reverse_merge!({
-        :session => mock("current_session").as_null_object,
+        :session => double("current_session").as_null_object,
         :authorized => true,
-        :user => mock("current_user").as_null_object
+        :user => double("current_user").as_null_object
       })
 
       controller.stub({

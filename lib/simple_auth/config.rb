@@ -16,20 +16,6 @@ module SimpleAuth
     cattr_accessor :wipeout_session
     @@wipeout_session = false
 
-    # Generate the password hash. The specified block should expected
-    # the plain password and the password hash as block parameters.
-    cattr_accessor :crypter
-    @@crypter = proc do |password, salt|
-      Digest::SHA256.hexdigest [password, salt].join("--")
-    end
-
-    # Generate the password salt. The specified block should expect
-    # the ActiveRecord instance as block parameter.
-    cattr_accessor :salt
-    @@salt = proc do |record|
-      Digest::SHA256.hexdigest [Time.to_s, SecureRandom.hex(32)].join("--")
-    end
-
     # Set which attributes will be used for authentication.
     cattr_accessor :credentials
     @@credentials = [:email, :login]
@@ -50,12 +36,6 @@ module SimpleAuth
     # when +redirect_logged_user+ helper is used.
     cattr_accessor :logged_url
     @@logged_url = proc { dashboard_path }
-
-    def self.reset_session(*args) # :nodoc:
-      Kernel.warn "The SimpleAuth::Config.reset_session accessor was disabled and will be removed in future versions."
-    end
-
-    class << self; alias reset_session= reset_session; end
 
     def self.model_class
       model.to_s.classify.constantize

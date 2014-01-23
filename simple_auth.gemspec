@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails", ">= 4.0.0"
   s.add_development_dependency "sqlite3-ruby"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "mongo_mapper"
+  s.add_development_dependency "bcrypt-ruby", "~> 3.0.0"
   s.add_development_dependency "bson_ext"
 end
