@@ -12,7 +12,7 @@ describe ApplicationController do
 
   context "redirecting logged users" do
     context "using hash" do
-      controller do
+      controller ApplicationController do
         redirect_logged_user :to => { :controller => "dashboard" }
 
         def index
@@ -24,13 +24,13 @@ describe ApplicationController do
         session[:user_id] = user.id
         get :index
 
-        response.code.should match(/302/)
-        response.should redirect_to("/dashboard")
+        expect(response.code).to match(/302/)
+        expect(response).to redirect_to("/dashboard")
       end
     end
 
     context "using block" do
-      controller do
+      controller ApplicationController do
         redirect_logged_user :to => proc { dashboard_path }
 
         def index
@@ -42,13 +42,13 @@ describe ApplicationController do
         session[:user_id] = user.id
         get :index
 
-        response.code.should match(/302/)
-        response.should redirect_to("/dashboard")
+        expect(response.code).to match(/302/)
+        expect(response).to redirect_to("/dashboard")
       end
     end
 
     context "using configuration" do
-      controller do
+      controller ApplicationController do
         redirect_logged_user
 
         def index
@@ -61,13 +61,13 @@ describe ApplicationController do
         session[:user_id] = user.id
         get :index
 
-        response.code.should match(/302/)
-        response.should redirect_to("/dashboard")
+        expect(response.code).to match(/302/)
+        expect(response).to redirect_to("/dashboard")
       end
     end
 
     context "when unlogged" do
-      controller do
+      controller ApplicationController do
         redirect_logged_user :to => { :controller => "dashboard" }
 
         def index
@@ -79,8 +79,8 @@ describe ApplicationController do
         session[:user_id] = nil
         get :index
 
-        response.code.should match(/200/)
-        response.body.should == "Rendered"
+        expect(response.code).to match(/200/)
+        expect(response.body).to eq("Rendered")
       end
     end
   end

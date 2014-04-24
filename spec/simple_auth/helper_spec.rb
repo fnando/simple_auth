@@ -13,12 +13,12 @@ describe SimpleAuth::Helper do
   end
 
   it "should render block when user is logged" do
-    @helper.should_receive(:logged_in?).and_return(true)
-    @helper.when_logged { "logged" }.should == "logged"
+    expect(@helper).to receive(:logged_in?).and_return(true)
+    expect(@helper.when_logged { "logged" }).to eq("logged")
   end
 
   it "should not render block when user is unlogged" do
-    @helper.should_receive(:logged_in?).and_return(false)
-    @helper.when_logged { "logged" }.should be_nil
+    expect(@helper).to receive(:logged_in?).and_return(false)
+    expect(@helper.when_logged { "logged" }).to be_nil
   end
 end

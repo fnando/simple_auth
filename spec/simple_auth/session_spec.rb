@@ -13,7 +13,7 @@ describe SimpleAuth::Session do
 
     @session = Hash.new
     @controller = ActionController::Base.new
-    @controller.stub :session => @session, :reset_session => nil
+    allow(@controller).to receive_messages :session => @session, :reset_session => nil
 
     SimpleAuth::Config.controller = @controller
     @user_session = SimpleAuth::Session.new(:credential => "johndoe", :password => "test")
@@ -23,7 +23,7 @@ describe SimpleAuth::Session do
     SimpleAuth::Config.controller = nil
 
     expect {
-      SimpleAuth::Session.find.should be_nil
+      expect(SimpleAuth::Session.find).to be_nil
     }.to_not raise_error
   end
 
@@ -43,54 +43,54 @@ describe SimpleAuth::Session do
 
     it "should return existing session" do
       @user_session = SimpleAuth::Session.find
-      @user_session.should be_valid
-      @user_session.record.should == @user
+      expect(@user_session).to be_valid
+      expect(@user_session.record).to eq(@user)
     end
 
     it "should not be new record" do
-      @user_session.should_not be_new_record
+      expect(@user_session).not_to be_new_record
     end
 
     it "should be invalid when record is not authorized" do
-      @controller.stub :authorized? => false
-      @user_session.should_not be_valid
+      allow(@controller).to receive_messages :authorized? => false
+      expect(@user_session).not_to be_valid
     end
 
     it "should be valid when record is authorized" do
-      @user_session.record.stub :authorized? => true
-      @user_session.should be_valid
+      allow(@user_session.record).to receive_messages :authorized? => true
+      expect(@user_session).to be_valid
     end
 
     it "should find record" do
-      @user_session.record.should == @user
+      expect(@user_session.record).to eq(@user)
     end
 
     it "should be saved" do
-      @user_session.save.should be_true
+      expect(@user_session.save).to be_truthy
     end
 
     it "should reset session before saving" do
       @session[:session_id] = "xWA1"
       @user_session.save
-      @session.should_not have_key(:session_id)
+      expect(@session).not_to have_key(:session_id)
     end
 
     it "should automatically save session when calling create!" do
       @user_session = SimpleAuth::Session.create!(:credential => "johndoe", :password => "test")
-      @user_session.should be_valid
-      @user_session.record.should == @user
-      @session[:user_id].should == @user.id
+      expect(@user_session).to be_valid
+      expect(@user_session.record).to eq(@user)
+      expect(@session[:user_id]).to eq(@user.id)
     end
 
     it "should destroy session" do
-      @user_session.destroy.should be_true
-      @user_session.record.should be_nil
-      @session.should_not have_key(:user)
+      expect(@user_session.destroy).to be_truthy
+      expect(@user_session.record).to be_nil
+      expect(@session).not_to have_key(:user)
     end
 
     it "should initialize record session" do
       @user_session.save
-      @session[:user_id].should == @user.id
+      expect(@session[:user_id]).to eq(@user.id)
     end
   end
 
@@ -102,57 +102,57 @@ describe SimpleAuth::Session do
 
     it "should unset previous record id when is not valid" do
       @session[:user_id] = 1
-      @user_session.should_not be_valid
-      @session.should_not have_key(:user)
+      expect(@user_session).not_to be_valid
+      expect(@session).not_to have_key(:user)
     end
 
     it "should unset previous record id when is not saved" do
       @session[:user_id] = 1
-      @user_session.save.should be_false
-      @session.should_not have_key(:user)
+      expect(@user_session.save).to be_falsey
+      expect(@session).not_to have_key(:user)
     end
 
     it "should be new record" do
-      SimpleAuth::Session.new.should be_new_record
-      @user_session.should be_new_record
+      expect(SimpleAuth::Session.new).to be_new_record
+      expect(@user_session).to be_new_record
     end
 
     it "should have error message" do
-      @user_session.errors.full_messages[0].should == "Invalid username or password"
+      expect(@user_session.errors.full_messages[0]).to eq("Invalid username or password")
     end
 
     it "should not return error messages for attributes" do
-      @user_session.errors.on(:credential).should be_nil
-      @user_session.errors.on(:password).should be_nil
+      expect(@user_session.errors.on(:credential)).to be_nil
+      expect(@user_session.errors.on(:password)).to be_nil
     end
 
     it "should return empty array when trying to get errors by using hash syntax" do
-      @user_session.errors[:credential].should be_empty
-      @user_session.errors[:password].should be_empty
+      expect(@user_session.errors[:credential]).to be_empty
+      expect(@user_session.errors[:password]).to be_empty
     end
 
     it "should have errors" do
-      @user_session.errors.should_not be_empty
+      expect(@user_session.errors).not_to be_empty
     end
 
     it "should not find existing session" do
-      SimpleAuth::Session.find.should be_nil
+      expect(SimpleAuth::Session.find).to be_nil
     end
 
     it "should not find record" do
-      @user_session.record.should be_nil
+      expect(@user_session.record).to be_nil
     end
 
     it "should not be a valid session" do
-      @user_session.should_not be_valid
+      expect(@user_session).not_to be_valid
     end
 
     it "should unset record store from session" do
-      @session.should_not have_key(:user)
+      expect(@session).not_to have_key(:user)
     end
 
     it "should not be saved" do
-      @user_session.save.should be_false
+      expect(@user_session.save).to be_falsey
     end
 
     it "should raise error with save!" do
@@ -172,12 +172,12 @@ describe SimpleAuth::Session do
     it "should keep return to url" do
       @session[:return_to] = "/some/path"
       @user_session.destroy
-      @session[:return_to].should == "/some/path"
+      expect(@session[:return_to]).to eq("/some/path")
     end
 
     it "should remove record session" do
       @user_session.destroy
-      @session.should_not have_key(:user_id)
+      expect(@session).not_to have_key(:user_id)
     end
 
     it "should keep keys composed by user_*" do
@@ -186,7 +186,7 @@ describe SimpleAuth::Session do
       @session[:user_friends_count] = 42
       @user_session.destroy
 
-      @session[:user_friends_count].should == 42
+      expect(@session[:user_friends_count]).to eq(42)
     end
 
     it "should wipe out keys composed by user_*" do
@@ -197,16 +197,16 @@ describe SimpleAuth::Session do
 
       @user_session.destroy
 
-      @session.should_not have_key(:user_friends_count)
-      @session.should_not have_key(:user_preferred_number)
+      expect(@session).not_to have_key(:user_friends_count)
+      expect(@session).not_to have_key(:user_preferred_number)
     end
 
     it "should unset current_user instance variable" do
       @user_session.destroy
 
-      SimpleAuth::Config.controller.send(:current_user).should be_nil
-      SimpleAuth::Config.controller.instance_variable_get("@current_user").should be_nil
-      SimpleAuth::Config.controller.instance_variable_get("@current_session").should be_nil
+      expect(SimpleAuth::Config.controller.send(:current_user)).to be_nil
+      expect(SimpleAuth::Config.controller.instance_variable_get("@current_user")).to be_nil
+      expect(SimpleAuth::Config.controller.instance_variable_get("@current_session")).to be_nil
     end
   end
 end

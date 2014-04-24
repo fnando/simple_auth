@@ -15,7 +15,7 @@ describe ApplicationController do
   end
 
   context "redirecting to requested page" do
-    controller do
+    controller ApplicationController do
       require_logged_user :to => "/login"
 
       def index
@@ -26,63 +26,63 @@ describe ApplicationController do
     it "should keep other session data" do
       session[:skip_intro] = true
       get :index
-      session[:skip_intro].should be_true
+      expect(session[:skip_intro]).to be_truthy
     end
 
     it "should remove record id from session" do
       session[:user_id] = 0
       get :index
-      session.should_not have_key(:user)
+      expect(session).not_to have_key(:user)
     end
 
     it "should remove session id from session" do
       session[:session_id] = "xSQR"
       get :index
-      session.should_not have_key(:session_id)
+      expect(session).not_to have_key(:session_id)
     end
 
     it "should return the request url" do
       get :index, :some => "param"
-      controller.send(:return_to, "/dashboard").should == "/anonymous?some=param"
+      expect(controller.send(:return_to, "/dashboard")).to eq("/anonymous?some=param")
     end
 
     it "should return the default url" do
-      controller.send(:return_to, "/dashboard").should == "/dashboard"
+      expect(controller.send(:return_to, "/dashboard")).to eq("/dashboard")
     end
 
     it "should set return to" do
       get :index, :some => "param"
-      session[:return_to].should == "/anonymous?some=param"
+      expect(session[:return_to]).to eq("/anonymous?some=param")
     end
 
     it "should remove return to from session" do
       get :index, :some => "param"
       controller.send(:return_to, "/dashboard")
-      session[:return_to].should be_nil
+      expect(session[:return_to]).to be_nil
     end
 
     it "should set warning message" do
       get :index
-      flash[:alert].should == "You need to be logged"
+      expect(flash[:alert]).to eq("You need to be logged")
     end
 
     it "should redirect when user is not authorized on controller level" do
       session[:user_id] = user.id
-      @controller.should_receive(:authorized?).and_return(false)
+      expect(@controller).to receive(:authorized?).and_return(false)
 
       get :index
-      response.should redirect_to("/login")
+      expect(response).to redirect_to("/login")
     end
 
     it "should redirect when session is not valid" do
       session[:user_id] = "invalid"
 
       get :index
-      response.should redirect_to("/login")
+      expect(response).to redirect_to("/login")
     end
 
     context "using hash" do
-      controller do
+      controller ApplicationController do
         require_logged_user :to => {:controller => "session", :action => "new"}
 
         def index
@@ -92,12 +92,12 @@ describe ApplicationController do
 
       it "should be redirected" do
         get :index
-        response.should redirect_to("/login")
+        expect(response).to redirect_to("/login")
       end
     end
 
     context "using block" do
-      controller do
+      controller ApplicationController do
         require_logged_user :to => proc { login_path }
 
         def index
@@ -107,12 +107,12 @@ describe ApplicationController do
 
       it "should be redirected" do
         get :index
-        response.should redirect_to("/login")
+        expect(response).to redirect_to("/login")
       end
     end
 
     context "using configuration" do
-      controller do
+      controller ApplicationController do
         require_logged_user
 
         def index
@@ -123,13 +123,13 @@ describe ApplicationController do
       it "should be redirected" do
         SimpleAuth::Config.login_url = "/login"
         get :index
-        response.should redirect_to("/login")
+        expect(response).to redirect_to("/login")
       end
     end
   end
 
   context "when logged" do
-    controller do
+    controller ApplicationController do
       require_logged_user
 
       def index
@@ -140,7 +140,7 @@ describe ApplicationController do
     it "should render page" do
       session[:user_id] = user.id
       get :index
-      response.body.should == "Rendered"
+      expect(response.body).to eq("Rendered")
     end
   end
 end
