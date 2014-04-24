@@ -2,7 +2,7 @@
 
 SimpleAuth is an authentication library to be used when everything else is just too complicated.
 
-This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like. Rails 3.0+ required.
+This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like. Rails 4.1+ required.
 
 ## Installation
 
