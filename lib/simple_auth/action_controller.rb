@@ -40,6 +40,14 @@ module SimpleAuth
         path = controller.instance_eval(&path) if path.kind_of?(Proc)
         path
       end
+
+      def request_uri
+        if request.respond_to?(:fullpath)
+          request.fullpath
+        else
+          request.request_uri
+        end
+      end
     end
 
     module ClassMethods
@@ -58,18 +66,14 @@ module SimpleAuth
       def require_logged_user(options = {})
         before_filter options.except(:to) do |controller|
           controller.instance_eval do
-            unless current_session && current_session.valid? && authorized?
-              if request.respond_to?(:fullpath)
-                return_to = request.fullpath
-              else
-                return_to = request.request_uri
-              end
+            # Already logged in, so skip validation.
+            next if current_session && current_session.valid? && authorized?
 
-              session[:return_to] = return_to if request.get?
+            session[:return_to] = request_uri if request.get?
 
-              SimpleAuth::Session.destroy!
-              redirect_to simple_auth_url_for(:login_url, controller, options[:to]), :alert => t("simple_auth.sessions.need_to_be_logged")
-            end
+            SimpleAuth::Session.destroy!
+            flash.alert = t("simple_auth.sessions.need_to_be_logged")
+            redirect_to simple_auth_url_for(:login_url, controller, options[:to])
           end
         end
       end
