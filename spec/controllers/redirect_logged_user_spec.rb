@@ -20,7 +20,7 @@ describe ApplicationController do
         end
       end
 
-      it "should redirect logged users" do
+      it "redirects logged users" do
         session[:user_id] = user.id
         get :index
 
@@ -38,7 +38,7 @@ describe ApplicationController do
         end
       end
 
-      it "should redirect logged users" do
+      it "redirects logged users" do
         session[:user_id] = user.id
         get :index
 
@@ -56,7 +56,7 @@ describe ApplicationController do
         end
       end
 
-      it "should redirect logged users" do
+      it "redirects logged users" do
         SimpleAuth::Config.logged_url = proc { dashboard_path }
         session[:user_id] = user.id
         get :index
@@ -75,7 +75,7 @@ describe ApplicationController do
         end
       end
 
-      it "should render page" do
+      it "renders page" do
         session[:user_id] = nil
         get :index
 

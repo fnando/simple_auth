@@ -10,7 +10,7 @@ describe SimpleAuth::ActiveRecord do
   end
 
   context "configuration" do
-    it "should set credentials" do
+    it "sets credentials" do
       model.authentication do |config|
         config.credentials = ["uid"]
       end
@@ -18,7 +18,7 @@ describe SimpleAuth::ActiveRecord do
       expect(SimpleAuth::Config.credentials).to eq(["uid"])
     end
 
-    it "should automatically set model" do
+    it "automatically sets model" do
       model.authentication do |config|
         config.model = nil
       end
@@ -32,17 +32,17 @@ describe SimpleAuth::ActiveRecord do
       expect(subject).not_to be_valid
     end
 
-    it "should require password" do
+    it "requires password" do
       expect(subject.errors[:password]).not_to be_empty
     end
 
-    it "should require password to be at least 4-chars long" do
+    it "requires password to be at least 4-chars long" do
       subject.password = "123"
       expect(subject).not_to be_valid
       expect(subject.errors[:password]).not_to be_empty
     end
 
-    it "should require password confirmation" do
+    it "requires password confirmation" do
       user = User.create(password: "test", password_confirmation: "invalid")
       expect(user.errors[:password_confirmation]).not_to be_empty
     end
@@ -62,43 +62,43 @@ describe SimpleAuth::ActiveRecord do
 
     subject { model.first }
 
-    it "should require password" do
+    it "requires password" do
       user = User.create(password: nil)
       expect(user.errors[:password]).not_to be_empty
     end
 
-    it "should authenticate using email" do
+    it "authenticates using email" do
       expect(model.authenticate("john@doe.com", "test")).to eq(subject)
     end
 
-    it "should authenticate using login" do
+    it "authenticates using login" do
       expect(model.authenticate("johndoe", "test")).to eq(subject)
     end
 
-    it "should authenticate using custom attribute" do
+    it "authenticates using custom attribute" do
       SimpleAuth::Config.credentials = [:username]
       expect(model.authenticate("john", "test")).to eq(subject)
     end
 
-    it "should not authenticate using invalid credential" do
+    it "doesn't authenticate using invalid credential" do
       expect(model.authenticate("invalid", "test")).to be_nil
     end
 
-    it "should not authenticate using wrong password" do
+    it "doesn't authenticate using wrong password" do
       expect(model.authenticate("johndoe", "invalid")).not_to be
     end
 
-    it "should return nil when no user has been found" do
+    it "returns nil when no user has been found" do
       expect(model.find_by_credential("invalid")).to be_nil
     end
 
-    it "should raise error when no user has been found" do
+    it "raises error when no user has been found" do
       expect {
         model.find_by_credential!("invalid")
       }.to raise_error(SimpleAuth::RecordNotFound)
     end
 
-    it "should return user" do
+    it "returns user" do
       expect(model.find_by_credential(subject.email)).to eq(subject)
       expect(model.find_by_credential!(subject.email)).to eq(subject)
     end

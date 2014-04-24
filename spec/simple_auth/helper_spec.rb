@@ -8,16 +8,16 @@ describe SimpleAuth::Helper do
     @helper.extend(ActionView::Helpers::CaptureHelper)
   end
 
-  it "should include module" do
+  it "includes module" do
     ApplicationController.included_modules.include?(SimpleAuth::Helper)
   end
 
-  it "should render block when user is logged" do
+  it "renders block when user is logged" do
     expect(@helper).to receive(:logged_in?).and_return(true)
     expect(@helper.when_logged { "logged" }).to eq("logged")
   end
 
-  it "should not render block when user is unlogged" do
+  it "doesn't render block when user is unlogged" do
     expect(@helper).to receive(:logged_in?).and_return(false)
     expect(@helper.when_logged { "logged" }).to be_nil
   end

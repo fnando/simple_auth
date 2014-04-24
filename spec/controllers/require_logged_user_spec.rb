@@ -23,50 +23,50 @@ describe ApplicationController do
       end
     end
 
-    it "should keep other session data" do
+    it "keeps other session data" do
       session[:skip_intro] = true
       get :index
       expect(session[:skip_intro]).to be_truthy
     end
 
-    it "should remove record id from session" do
+    it "removes record id from session" do
       session[:user_id] = 0
       get :index
       expect(session).not_to have_key(:user)
     end
 
-    it "should remove session id from session" do
+    it "removes session id from session" do
       session[:session_id] = "xSQR"
       get :index
       expect(session).not_to have_key(:session_id)
     end
 
-    it "should return the request url" do
+    it "returns the request url" do
       get :index, :some => "param"
       expect(controller.send(:return_to, "/dashboard")).to eq("/anonymous?some=param")
     end
 
-    it "should return the default url" do
+    it "returns the default url" do
       expect(controller.send(:return_to, "/dashboard")).to eq("/dashboard")
     end
 
-    it "should set return to" do
+    it "sets return to" do
       get :index, :some => "param"
       expect(session[:return_to]).to eq("/anonymous?some=param")
     end
 
-    it "should remove return to from session" do
+    it "removes return to from session" do
       get :index, :some => "param"
       controller.send(:return_to, "/dashboard")
       expect(session[:return_to]).to be_nil
     end
 
-    it "should set warning message" do
+    it "sets warning message" do
       get :index
       expect(flash[:alert]).to eq("You need to be logged")
     end
 
-    it "should redirect when user is not authorized on controller level" do
+    it "redirects when user is not authorized on controller level" do
       session[:user_id] = user.id
       expect(@controller).to receive(:authorized?).and_return(false)
 
@@ -74,7 +74,7 @@ describe ApplicationController do
       expect(response).to redirect_to("/login")
     end
 
-    it "should redirect when session is not valid" do
+    it "redirects when session is not valid" do
       session[:user_id] = "invalid"
 
       get :index
@@ -90,7 +90,7 @@ describe ApplicationController do
         end
       end
 
-      it "should be redirected" do
+      it "is redirected" do
         get :index
         expect(response).to redirect_to("/login")
       end
@@ -105,7 +105,7 @@ describe ApplicationController do
         end
       end
 
-      it "should be redirected" do
+      it "is redirected" do
         get :index
         expect(response).to redirect_to("/login")
       end
@@ -120,7 +120,7 @@ describe ApplicationController do
         end
       end
 
-      it "should be redirected" do
+      it "is redirected" do
         SimpleAuth::Config.login_url = "/login"
         get :index
         expect(response).to redirect_to("/login")
@@ -137,7 +137,7 @@ describe ApplicationController do
       end
     end
 
-    it "should render page" do
+    it "renders page" do
       session[:user_id] = user.id
       get :index
       expect(response.body).to eq("Rendered")
