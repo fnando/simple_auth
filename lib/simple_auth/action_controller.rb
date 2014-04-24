@@ -67,7 +67,7 @@ module SimpleAuth
         before_filter options.except(:to) do |controller|
           controller.instance_eval do
             # Already logged in, so skip validation.
-            next if current_session && current_session.valid? && authorized?
+            next if current_session.try(:valid?) && authorized?
 
             session[:return_to] = request_uri if request.get?
 
