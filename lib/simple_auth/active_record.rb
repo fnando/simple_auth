@@ -29,12 +29,16 @@ module SimpleAuth
         # So, just return.
         return if respond_to?(:authenticate)
 
-        extend  ClassMethods
-
         has_secure_password
+
+        extend  ClassMethods
+        include InstanceMethods
 
         validates_length_of :password, minimum: 4
       end
+    end
+
+    module InstanceMethods
     end
 
     module ClassMethods

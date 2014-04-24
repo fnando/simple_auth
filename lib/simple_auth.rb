@@ -9,4 +9,3 @@ require "simple_auth/active_record"
 require "simple_auth/session"
 require "simple_auth/helper"
 require "simple_auth/version"
-
