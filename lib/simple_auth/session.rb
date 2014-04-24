@@ -123,7 +123,7 @@ module SimpleAuth
     end
 
     def valid?
-      if record && record.authorized?
+      if record && controller.send(:authorized?)
         true
       else
         errors.add_to_base I18n.translate("simple_auth.sessions.invalid_credentials")

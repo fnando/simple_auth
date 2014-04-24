@@ -52,7 +52,7 @@ describe SimpleAuth::Session do
     end
 
     it "should be invalid when record is not authorized" do
-      @user_session.record.stub :authorized? => false
+      @controller.stub :authorized? => false
       @user_session.should_not be_valid
     end
 
