@@ -33,4 +33,9 @@ describe SimpleAuth, "compatibility mode" do
     customer = Customer.create(password: "test")
     expect(customer.password_digest).not_to be_empty
   end
+
+  it "assigns password confirmation" do
+    customer = Customer.create(password: "test", password_confirmation: "test")
+    expect(customer.password).to eq(customer.password_confirmation)
+  end
 end
