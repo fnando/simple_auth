@@ -3,11 +3,11 @@ require "spec_helper"
 describe SimpleAuth, "compatibility mode" do
   before do
     SimpleAuth::Config.model = :customer
-    require "simple_auth/compat"
+    load "./lib/simple_auth/compat.rb"
     require "customer"
   end
 
-  after do
+  after :all do
     mod = SimpleAuth::ActiveRecord::InstanceMethods
     mod.send :remove_method, :password=
     mod.send :remove_method, :password_confirmation=
@@ -27,5 +27,10 @@ describe SimpleAuth, "compatibility mode" do
     SQL
 
     expect(Customer.authenticate("johndoe", "test")).to be_a(Customer)
+  end
+
+  it "assigns password_digest" do
+    customer = Customer.create(password: "test")
+    expect(customer.password_digest).not_to be_empty
   end
 end
