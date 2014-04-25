@@ -179,7 +179,7 @@ en:
 
 The previous version was based on hashing with salt. If you want to migrate to the v2 release, you must do some things.
 
-Finally, add the following like to the configuration initializer (available at `config/initializers/simple_auth.rb`:
+First, add the following line to the configuration initializer (available at `config/initializers/simple_auth.rb`:
 
 ```ruby
 require "simple_auth/compat"
