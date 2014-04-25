@@ -42,9 +42,14 @@ describe SimpleAuth::ActiveRecord do
       expect(subject.errors[:password]).not_to be_empty
     end
 
-    it "requires password confirmation" do
+    it "requires password confirmation", if: Rails::VERSION::STRING >= "4.0" do
       user = User.create(password: "test", password_confirmation: "invalid")
       expect(user.errors[:password_confirmation]).not_to be_empty
+    end
+
+    it "requires password confirmation", if: Rails::VERSION::STRING < "4.0" do
+      user = User.create(password: "test", password_confirmation: "invalid")
+      expect(user.errors[:password]).not_to be_empty
     end
   end
 

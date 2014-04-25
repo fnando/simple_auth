@@ -3,6 +3,7 @@ require "bundler/setup"
 Bundler.require
 
 I18n.load_path += Dir[File.expand_path("../../locales/*.yml", __FILE__)]
+I18n.enforce_available_locales = false
 
 require "rails"
 require "simple_auth"
