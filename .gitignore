@@ -3,3 +3,5 @@ pkg
 .rvmrc
 log
 .bundle
+gemfiles/*.lock
+Gemfile.lock
