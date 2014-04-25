@@ -1,8 +1,13 @@
 # Simple Auth
 
+[![Build Status](https://travis-ci.org/fnando/simple_auth.svg)](https://travis-ci.org/fnando/simple_auth)
+[![Code Climate](https://codeclimate.com/github/fnando/simple_auth.png)](https://codeclimate.com/github/fnando/simple_auth)
+
 SimpleAuth is an authentication library to be used when everything else is just too complicated.
 
-This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like. Rails 4.1+ required.
+This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like.
+
+Rails 3.1.0+ is required.
 
 ## Installation
 
