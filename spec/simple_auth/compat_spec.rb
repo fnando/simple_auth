@@ -31,11 +31,11 @@ describe SimpleAuth, "compatibility mode" do
 
   it "assigns password_digest" do
     customer = Customer.create(password: "test")
-    expect(customer.password_digest).not_to be_empty
+    expect(customer.password_digest).to be_present
   end
 
   it "assigns password confirmation" do
     customer = Customer.create(password: "test", password_confirmation: "test")
-    expect(customer.password).to eq(customer.password_confirmation)
+    expect(customer.password_confirmation).to be_present
   end
 end

@@ -10,6 +10,8 @@ require "simple_auth"
 require File.dirname(__FILE__) + "/support/config/boot"
 require "rspec/rails"
 
+$rails_version = Rails::VERSION::STRING
+
 # Load database schema
 load File.dirname(__FILE__) + "/schema.rb"
 

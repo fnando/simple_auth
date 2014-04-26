@@ -21,7 +21,7 @@ module SimpleAuth
       #     end
       #   end
       #
-      def authentication(&block)
+      def authentication(options = {}, &block)
         SimpleAuth.setup(&block) if block_given?
         SimpleAuth::Config.model ||= name.underscore.to_sym
 
@@ -29,12 +29,21 @@ module SimpleAuth
         # So, just return.
         return if respond_to?(:authenticate)
 
-        has_secure_password
+        macro = method(:has_secure_password)
+
+        if macro.arity.zero?
+          has_secure_password
+        else
+          has_secure_password(options)
+        end
 
         extend  ClassMethods
         include InstanceMethods
 
-        validates_length_of :password, minimum: 4
+        if options.fetch(:validations, true)
+          validates_length_of :password, minimum: 4,
+            if: -> { password.present? }
+        end
       end
     end
 

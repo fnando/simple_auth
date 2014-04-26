@@ -32,8 +32,12 @@ describe SimpleAuth::ActiveRecord do
       expect(subject).not_to be_valid
     end
 
-    it "requires password" do
+    it "requires password", if: $rails_version >= "4.0" do
       expect(subject.errors[:password]).not_to be_empty
+    end
+
+    it "requires password", if: $rails_version < "4.0" do
+      expect(subject.errors[:password_digest]).not_to be_empty
     end
 
     it "requires password to be at least 4-chars long" do
@@ -42,21 +46,28 @@ describe SimpleAuth::ActiveRecord do
       expect(subject.errors[:password]).not_to be_empty
     end
 
-    it "requires password confirmation", if: Rails::VERSION::STRING >= "4.0" do
+    it "requires password confirmation", if: $rails_version >= "4.0" do
       user = User.create(password: "test", password_confirmation: "invalid")
       expect(user.errors[:password_confirmation]).not_to be_empty
     end
 
-    it "requires password confirmation", if: Rails::VERSION::STRING < "4.0" do
+    it "requires password confirmation", if: $rails_version < "4.0" do
       user = User.create(password: "test", password_confirmation: "invalid")
       expect(user.errors[:password]).not_to be_empty
+    end
+  end
+
+  context "ignoring validations" do
+    it "ignores validations", if: $rails_version >= "4.0" do
+      person = Person.new
+      expect(person).to be_valid
     end
   end
 
   context "existing record" do
     before do
       model.delete_all
-      model.create(
+      model.create!(
         :email => "john@doe.com",
         :login => "johndoe",
         :password => "test",
@@ -67,9 +78,14 @@ describe SimpleAuth::ActiveRecord do
 
     subject { model.first }
 
-    it "requires password" do
+    it "requires password", if: $rails_version >= "4.0" do
       user = User.create(password: nil)
       expect(user.errors[:password]).not_to be_empty
+    end
+
+    it "requires password", if: $rails_version < "4.0" do
+      user = User.create(password: nil)
+      expect(user.errors[:password_digest]).not_to be_empty
     end
 
     it "authenticates using email" do
@@ -101,6 +117,25 @@ describe SimpleAuth::ActiveRecord do
       expect {
         model.find_by_credential!("invalid")
       }.to raise_error(SimpleAuth::RecordNotFound)
+    end
+
+    it "skips password length validation when no password is set" do
+      expect {
+        subject.username = "jd"
+        subject.save!
+      }.not_to raise_error
+    end
+
+    it "enforces password length when password is set" do
+      subject.password = "a"
+      subject.valid?
+      expect(subject.errors[:password]).to have(1).item
+    end
+
+    it "accepts valid password" do
+      subject.password = "test"
+      subject.valid?
+      expect(subject.errors[:password]).to be_empty
     end
 
     it "returns user" do
