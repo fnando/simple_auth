@@ -10,7 +10,6 @@ describe SimpleAuth, "compatibility mode" do
   after :all do
     mod = SimpleAuth::ActiveRecord::InstanceMethods
     mod.send :remove_method, :password=
-    mod.send :remove_method, :password_confirmation=
     mod.send :remove_method, :authenticate
   end
 
@@ -34,8 +33,13 @@ describe SimpleAuth, "compatibility mode" do
     expect(customer.password_digest).to be_present
   end
 
-  it "assigns password confirmation" do
+  it "sets password" do
     customer = Customer.create(password: "test", password_confirmation: "test")
-    expect(customer.password_confirmation).to be_present
+    expect(customer.password).to eql("test")
+  end
+
+  it "sets password confirmation" do
+    customer = Customer.create(password: "test", password_confirmation: "test")
+    expect(customer.password_confirmation).to eql("test")
   end
 end

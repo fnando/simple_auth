@@ -17,10 +17,7 @@ module SimpleAuth
     module InstanceMethods
       def password=(password)
         super SimpleAuth::Config.crypter.call(password, password_salt)
-      end
-
-      def password_confirmation=(password)
-        super SimpleAuth::Config.crypter.call(password, password_salt)
+        @password = password
       end
 
       def authenticate(password)
