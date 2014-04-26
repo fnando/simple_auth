@@ -1,3 +1,11 @@
+# v2.0.3
+
+- Assign the raw password/confirmation, so we can apply validations on the raw value.
+
+# v2.0.2
+
+- The compat wasn't validating fields correctly.
+
 # v2.0.1
 
 - The compat mode wasn't generating the `password_digest`.
