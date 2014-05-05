@@ -133,7 +133,9 @@ module SimpleAuth
     end
 
     def record
-      @record ||= model.authenticate(credential, password)
+      @record ||= model
+        .find_by_credential(credential)
+        .try(:authenticate, password)
     end
 
     def save
