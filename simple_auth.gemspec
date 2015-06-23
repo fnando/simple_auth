@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 3.1.0"
   s.add_development_dependency "sqlite3-ruby"
-  s.add_development_dependency "rspec-rails", "3.0.0.beta2"
+  s.add_development_dependency "rspec-rails", "~> 3.0"
   s.add_development_dependency "bcrypt", "~> 3.1.7"
   s.add_development_dependency "pry-meta"
 end
