@@ -129,7 +129,7 @@ describe SimpleAuth::ActiveRecord do
     it "enforces password length when password is set" do
       subject.password = "a"
       subject.valid?
-      expect(subject.errors[:password]).to have(1).item
+      expect(subject.errors[:password].length).to eq(1)
     end
 
     it "accepts valid password" do

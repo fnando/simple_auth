@@ -17,6 +17,7 @@ load File.dirname(__FILE__) + "/schema.rb"
 
 # Restore default configuration
 RSpec.configure do |config|
+  config.infer_spec_type_from_file_location!
   config.before :each do
     load File.dirname(__FILE__) + "/../lib/simple_auth/config.rb"
   end
