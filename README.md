@@ -2,12 +2,13 @@
 
 [![Build Status](https://travis-ci.org/fnando/simple_auth.svg)](https://travis-ci.org/fnando/simple_auth)
 [![Code Climate](https://codeclimate.com/github/fnando/simple_auth.png)](https://codeclimate.com/github/fnando/simple_auth)
+[![Gem Version](https://badge.fury.io/rb/simple_auth.svg)](http://badge.fury.io/rb/simple_auth)
 
 SimpleAuth is an authentication library to be used when everything else is just too complicated.
 
-This library only supports in-site authentication and won't implement OpenID, Facebook Connect and like.
+This library only handles session. You have to implement the authentication strategy as you want (e.g. in-site authentication, OAuth, etc).
 
-Rails 3.1.0+ is required.
+Rails 4.2+ running over Ruby 2.1+ is required.
 
 ## Installation
 
@@ -19,67 +20,42 @@ Then run `rails generate simple_auth:install` to copy the initializer file.
 
 ## Usage
 
-Your user model should have the attribute `password_digest`. The credential field can be anything you want, but SimpleAuth uses `[:email, :login]` by default.
+The initializer will install the required helper methods on your controller. So, let's say you want to support `user` and `admin` authentication. You'll need to specify the following scope.
 
 ```ruby
-class CreateUsers < ActiveRecord::Migration
-  def change
-    create_table :users do |t|
-      t.string :email, null: false
-      t.string :login, null: false
-      t.string :password_digest, null: false
+# config/initializers/simple_auth.rb
+SimpleAuth.setup do |config|
+  config.scopes = %i[user admin]
+  config.login_url = proc { login_path }
+  config.logged_url = proc { dashboard_path }
 
-      t.timestamps
-    end
-
-    add_index :users, :email, unique: true
-    add_index :users, :login, unique: true
-    add_index :users, [:email, :login]
-  end
+  config.install_helpers!
 end
 ```
 
-In your model, use the `authentication` macro.
+Session is valid only when `Controller#authorized_#{scope}?` method returns `true`, which is the default behavior. You can override these methods with your own rules; the following example shows how you can authorize all e-mails from `@example.com` to access the admin dashboard.
 
 ```ruby
-class User < ActiveRecord::Base
-  authentication
-end
-```
-
-This will add some callbacks and password validations. It will also inject helper methods like `Model.authenticate`.
-
-Session is valid only when both `Model#authorized?` and `Controller#authorized?` methods return `true`, which is the default behavior. You can override these methods with your own rules:
-
-```ruby
-class User < ActiveRecord::Base
-  authentication
-
-  def authorized?
-    deleted_at.nil?
-  end
-end
-
 class Admin::DashboardController < ApplicationController
   private
-  def authorized?
-    current_user.admin?
+  def authorized_admin?
+    current_user.email.match(/@example.com\z/)
   end
 end
 ```
 
-After you set up the model, you can go to the controller.
+So, how do you set up a new user session? That's really simple, actually.
 
 ```ruby
 class SessionsController < ApplicationController
   def new
-    @user_session = SimpleAuth::Session.new
   end
 
   def create
-    @user_session = SimpleAuth::Session.new(params[:session])
+    @user = User.find_by_email(params[:email])
 
-    if @user_session.save
+    if @user.try(:authenticate, params[:password])
+      SimpleAuth::Session.create(scope: "user", session: session, record: @user)
       redirect_to return_to(dashboard_path)
     else
       flash[:alert] = "Invalid username or password"
@@ -88,79 +64,38 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    current_session.destroy if logged_in?
+    reset_session
     redirect_to root_path
   end
 end
 ```
 
-The `return_to` helper will give you the requested url (before the user logged in) or the default url.
+First thing to notice is that simple_auth doesn't care about how you authenticate. You could easily set up a different authentication strategy, e.g. API tokens. The important part is assign the `record:` and `scope:` options. The `return_to` helper will give you the requested url (before the user logged in) or the default url.
 
-You can restrict access by using 2 macros:
+Same thing applies to destroying a session. You can just reset it, calling `reset_session`.
+
+You can restrict access by using 2 macros. Use `redirect_logged_#{scope}` to avoid rendering a page for logged user.
 
 ```ruby
 class SignupController < ApplicationController
-  redirect_logged_user :to => "/"
+  before_action :redirect_logged_user
 end
 ```
 
-Here's some usage examples:
-
-```ruby
-redirect_logged_user :to => proc { login_path }
-redirect_logged_user :to => {:controller => "dashboard"}
-redirect_logged_user :only => [:index], :to => login_path
-redirect_logged_user :except => [:public], :to => login_path
-```
-
-You can skip the `:to` option if you set it globally on your initializer:
-
-```ruby
-SimpleAuth::Config.logged_url = {:controller => "session", :action => "new"}
-SimpleAuth::Config.logged_url = proc { login_path }
-```
-
-To require a logged user, use the `require_logged_user` macro:
+Use `require_logged_#{scope}` to enforce authenticated access.
 
 ```ruby
 class DashboardController < ApplicationController
-  require_logged_user :to => proc { login_path }
+  before_action :require_logged_user
 end
 ```
 
-Here's some usage examples:
+"So which helpers are defined?", you ask. Just three simple helpers.
 
 ```ruby
-require_logged_user :to => proc { login_path }
-require_logged_user :to => {:controller => "session", :action => "new"}
-require_logged_user :only => [:index], :to => login_path
-require_logged_user :except => [:public], :to => login_path
-```
-
-You can skip the `:to` option if you set it globally on your initializer:
-
-```ruby
-SimpleAuth::Config.login_url = {:controller => "session", :action => "new"}
-SimpleAuth::Config.login_url = proc { login_path }
-```
-
-There are some helpers:
-
-```ruby
-logged_in?              # controller & views
-current_user            # controller & views
-current_session         # controller & views
-when_logged(&block)     # views
-find_by_credential      # model
-find_by_credential!     # model
-```
-
-If you're having problems to use any helper, include the module `SimpleAuth::Helper` on your `ApplicationHelper`.
-
-```ruby
-module ApplicationHelper
-  include SimpleAuth::Helper
-end
+#{scope}_logged_in?    # e.g. user_logged_in? (available in controller & views)
+current_#{scope}       # e.g. current_user    (available in controller & views)
+#{scope}_session       # e.g. user_session    (available in controller & views)
 ```
 
 ### Translations
@@ -170,54 +105,16 @@ These are the translations you'll need:
 ```yaml
 en:
   simple_auth:
-    sessions:
-      need_to_be_logged: "You need to be logged"
-      invalid_credentials: "Invalid username or password"
+    user:
+      need_to_be_logged_in: "You need to be logged"
+      not_authorized: "You don't have permission to access this page"
 ```
 
-### Compatibility Mode with v1
-
-The previous version was based on hashing with salt. If you want to migrate to the v2 release, you must do some things.
-
-First, add the following line to the configuration initializer (available at `config/initializers/simple_auth.rb`:
-
-```ruby
-require "simple_auth/compat"
-```
-
-Then create a field called `password_digest`. This field is required by the `ActiveRecord::Base.has_secure_password` method. You can create a migration with the following content:
-
-```ruby
-class AddPasswordDigestToUsers < ActiveRecord::Migration
-  def up
-    add_column :users, :password_digest, :string, null: true
-    SimpleAuth.migrate_passwords!
-    change_column_null :users, :password_digest, false
-  end
-
-  def down
-    remove_column :users, :password_digest
-  end
-end
-```
-
-Apply this migration with `rake db:migrate`. Go read a book; this is going to take a while.
-
-Check if your application is still working. If so, you can remove the `password_hash` column. Here's the migration to do it so.
-
-```ruby
-class RemovePasswordHashFromUsers < ActiveRecord::Migration
-  def change
-    remove_column :users, :password_hash
-  end
-end
-```
-
-Again, apply this migration with `rake db:migrate`.
+If you don't set these translations, a default message will be used.
 
 ## Maintainer
 
-* Nando Vieira (<http://simplesideias.com.br>)
+* Nando Vieira (<http://nandovieira.com>)
 
 ## License:
 
