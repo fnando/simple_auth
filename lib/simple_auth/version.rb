@@ -1,8 +1,3 @@
 module SimpleAuth
-  module Version
-    MAJOR = 2
-    MINOR = 0
-    PATCH = 4
-    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
-  end
+  VERSION = "3.0.0"
 end

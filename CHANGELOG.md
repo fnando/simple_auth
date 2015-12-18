@@ -1,3 +1,7 @@
+#v3.0.0
+- Reimplemented library.
+- Add support for scoped authentication (e.g. user and admin).
+
 # v2.0.3
 
 - Assign the raw password/confirmation, so we can apply validations on the raw value.
