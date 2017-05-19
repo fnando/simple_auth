@@ -17,10 +17,11 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "rails", ">= 4.2.0"
-  s.add_development_dependency "sqlite3-ruby"
+  s.add_development_dependency "sqlite3"
   s.add_development_dependency "activerecord"
   s.add_development_dependency "minitest"
   s.add_development_dependency "minitest-utils"
   s.add_development_dependency "bcrypt", "~> 3.1.7"
   s.add_development_dependency "pry-meta"
+  s.add_development_dependency "simplecov"
 end

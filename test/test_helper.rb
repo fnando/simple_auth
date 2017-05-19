@@ -1,4 +1,5 @@
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "simplecov"
+SimpleCov.start
 
 require "bundler/setup"
 require "rack/test"
@@ -7,6 +8,7 @@ require "minitest/autorun"
 
 require "./test/support/dummy/config/application"
 require "./test/support/dummy/config/routes"
+require "./test/support/dummy/app/controllers/application_controller"
 
 require "active_record"
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"

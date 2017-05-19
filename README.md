@@ -1,8 +1,10 @@
 # Simple Auth
 
-[![Build Status](https://travis-ci.org/fnando/simple_auth.svg)](https://travis-ci.org/fnando/simple_auth)
-[![Code Climate](https://codeclimate.com/github/fnando/simple_auth.png)](https://codeclimate.com/github/fnando/simple_auth)
-[![Gem Version](https://badge.fury.io/rb/simple_auth.svg)](http://badge.fury.io/rb/simple_auth)
+[![Travis-CI](https://travis-ci.org/fnando/simple_auth.svg)](https://travis-ci.org/fnando/simple_auth)
+[![Code Climate](https://codeclimate.com/github/fnando/simple_auth/badges/gpa.svg)](https://codeclimate.com/github/fnando/simple_auth)
+[![Test Coverage](https://codeclimate.com/github/fnando/simple_auth/badges/coverage.svg)](https://codeclimate.com/github/fnando/simple_auth/coverage)
+[![Gem](https://img.shields.io/gem/v/simple_auth.svg)](https://rubygems.org/gems/simple_auth)
+[![Gem](https://img.shields.io/gem/dt/simple_auth.svg)](https://rubygems.org/gems/simple_auth)
 
 SimpleAuth is an authentication library to be used when everything else is just too complicated.
 

@@ -1,4 +1,5 @@
 #v3.0.0
+
 - Reimplemented library.
 - Add support for scoped authentication (e.g. user and admin).
 

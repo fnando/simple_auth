@@ -3,8 +3,7 @@ pkg
 .rvmrc
 log
 .bundle
-gemfiles/*.lock
-Gemfile.lock
 *.log
 /tmp
 /log
+/coverage
