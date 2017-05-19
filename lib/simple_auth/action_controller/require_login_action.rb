@@ -16,7 +16,7 @@ module SimpleAuth
       end
 
       def message
-        return nil if valid?
+        return if valid?
         return unauthorized_message unless authorized?
         unlogged_message
       end
