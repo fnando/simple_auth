@@ -10,8 +10,6 @@ SimpleAuth is an authentication library to be used when everything else is just 
 
 This library only handles session. You have to implement the authentication strategy as you want (e.g. in-site authentication, OAuth, etc).
 
-Rails 4.2+ running over Ruby 2.1+ is required.
-
 ## Installation
 
 Just the following line to your Gemfile:
