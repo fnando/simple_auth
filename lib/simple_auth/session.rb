@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SimpleAuth
   class Session
     def self.create(**kwargs)
@@ -16,8 +18,10 @@ module SimpleAuth
     end
 
     def record
+      return unless record_id_from_session
+
       @record ||= record_class
-                  .find_by_id(record_id_from_session) if record_id_from_session
+                  .find_by_id(record_id_from_session)
     end
 
     def record_class

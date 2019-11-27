@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SimpleAuth
   class Config
     # Set which scopes will be activated.

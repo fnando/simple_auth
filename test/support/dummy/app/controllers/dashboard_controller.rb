@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DashboardController < ApplicationController
   before_action :require_logged_user, except: %w[log_in not_logged]
   before_action :redirect_logged_user, only: "not_logged"
@@ -15,9 +17,7 @@ class DashboardController < ApplicationController
     head :ok
   end
 
-  private
-
-  def authorized_user?
+  private def authorized_user?
     current_user.try(:email).to_s.match(/@example.com\z/)
   end
 end

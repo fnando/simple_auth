@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 SimpleAuth.setup do |config|
   # Define with scopes will be installed.
   # This can be useful if you want to have separated sessions

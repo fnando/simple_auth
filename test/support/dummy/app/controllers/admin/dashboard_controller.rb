@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../application_controller"
 
 module Admin
@@ -26,9 +28,7 @@ module Admin
       head :ok
     end
 
-    private
-
-    def authorized?
+    private def authorized?
       current_admin.present? || current_user.admin?
     end
   end

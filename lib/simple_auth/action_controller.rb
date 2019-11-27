@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SimpleAuth
   module ActionController
     extend ActiveSupport::Concern
@@ -15,7 +16,7 @@ module SimpleAuth
         end
       end
 
-      def install_simple_auth_scope(scope)
+      def install_simple_auth_scope(scope) # rubocop:disable Metrics/MethodLength
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{scope}_session
             @#{scope}_session ||= Session.create(scope: :#{scope}, session: session)
@@ -44,17 +45,15 @@ module SimpleAuth
       end
     end
 
-    private
-
-    def simple_auth
+    private def simple_auth
       @simple_auth ||= SimpleAuth.config
     end
 
-    def return_to(url)
+    private def return_to(url)
       session[:return_to] || url
     end
 
-    def simple_auth_require_logged_scope(scope)
+    private def simple_auth_require_logged_scope(scope)
       action = RequireLoginAction.new(self, scope)
       return if action.valid?
 
@@ -64,7 +63,7 @@ module SimpleAuth
       redirect_to instance_eval(&simple_auth.login_url)
     end
 
-    def simple_auth_redirect_logged_scope(scope)
+    private def simple_auth_redirect_logged_scope(scope)
       scope_session = send("#{scope}_session")
       return unless scope_session.valid?
 

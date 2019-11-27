@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SimpleAuth
   require "rails/railtie"
   require "active_support/concern"
