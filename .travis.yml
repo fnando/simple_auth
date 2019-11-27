@@ -16,9 +16,6 @@ notifications:
 gemfile:
   - gemfiles/rails_6_0.gemfile
   - gemfiles/rails_5_2.gemfile
-  - gemfiles/rails_5_1.gemfile
-  - gemfiles/rails_5_0.gemfile
-  - gemfiles/rails_4_2.gemfile
 env:
   global:
     secure: EyHXkXMtzAd2WeSwmqp2+1GtSNgKFQRA4CPE2LpgE2qKIzb4uh5MmZekND4vHRoZwm+p2qDyX2qgAdv+o10Q6qdMc+he2sl7TvYF9gX4pHgLbgMVqn3if320fp/JMAhrvunv9ps5tnXid8GtZki5S0TZAg15zf//Qq/gMzSzNtE=
