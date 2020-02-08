@@ -1,4 +1,4 @@
-# v3.1.0 (unreleased)
+# v3.1.0
 
 - SimpleAuth now uses [GlobalID](https://github.com/rails/globalid) as the
   identification that's saved on the session. This should be a seamless
