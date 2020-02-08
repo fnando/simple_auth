@@ -2,6 +2,7 @@
 sudo: false
 cache: bundler
 rvm:
+  - 2.7.0
   - 2.6.5
   - 2.5.7
 script: bundle exec rake
@@ -18,4 +19,4 @@ gemfile:
   - gemfiles/rails_5_2.gemfile
 env:
   global:
-    secure: EyHXkXMtzAd2WeSwmqp2+1GtSNgKFQRA4CPE2LpgE2qKIzb4uh5MmZekND4vHRoZwm+p2qDyX2qgAdv+o10Q6qdMc+he2sl7TvYF9gX4pHgLbgMVqn3if320fp/JMAhrvunv9ps5tnXid8GtZki5S0TZAg15zf//Qq/gMzSzNtE=
+    secure: LglasZ2QJLCE2tSKyZ9wIZNNwDNQ/gi+QNSHlpK2olgBOYMKV1idJPZjUlSTAac7+QHTYRRGCoUVMYHWxJgLfcuo7YpXVAgqPwjVl5nbHKfh/oP/FLriELKZbqMo0TtuqZNdnqPdO8RE7zK0om37jYNoUPJ4j2mUVLC8PMZpbiM=
