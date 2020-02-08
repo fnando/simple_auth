@@ -13,19 +13,14 @@ module SimpleAuth
     end
 
     def record=(record)
-      @session[record_key] = record.try(:id)
+      @session[record_key] = record ? record.to_gid.to_s : nil
       @record = record
     end
 
     def record
       return unless record_id_from_session
 
-      @record ||= record_class
-                  .find_by_id(record_id_from_session)
-    end
-
-    def record_class
-      @record_class ||= Object.const_get(:"#{@scope.to_s.camelize}")
+      @record ||= GlobalID::Locator.locate(record_id_from_session)
     end
 
     def record_key

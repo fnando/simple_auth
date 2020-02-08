@@ -2,6 +2,7 @@
 
 module SimpleAuth
   require "rails/railtie"
+  require "global_id/railtie"
   require "active_support/concern"
 
   require "simple_auth/version"

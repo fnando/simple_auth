@@ -19,7 +19,8 @@ Gem::Specification.new do |s|
                     .map {|f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "rails", ">= 4.2.0"
+  s.add_dependency "globalid"
+  s.add_dependency "rails"
   s.add_development_dependency "activerecord"
   s.add_development_dependency "bcrypt", "~> 3.1.7"
   s.add_development_dependency "minitest"
