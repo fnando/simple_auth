@@ -1,4 +1,11 @@
-#v3.0.0
+# v3.1.0 (unreleased)
+
+- SimpleAuth now uses [GlobalID](https://github.com/rails/globalid) as the
+  identification that's saved on the session. This should be a seamless
+  migration (users will only have to re-login). This allows using any objects
+  that respond to `#to_gid`, including namespaced models and POROs.
+
+# v3.0.0
 
 - Reimplemented library.
 - Add support for scoped authentication (e.g. user and admin).
