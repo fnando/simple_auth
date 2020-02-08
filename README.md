@@ -6,9 +6,11 @@
 [![Gem](https://img.shields.io/gem/v/simple_auth.svg)](https://rubygems.org/gems/simple_auth)
 [![Gem](https://img.shields.io/gem/dt/simple_auth.svg)](https://rubygems.org/gems/simple_auth)
 
-SimpleAuth is an authentication library to be used when everything else is just too complicated.
+SimpleAuth is an authentication library to be used when everything else is just
+too complicated.
 
-This library only handles session. You have to implement the authentication strategy as you want (e.g. in-site authentication, OAuth, etc).
+This library only handles session. You have to implement the authentication
+strategy as you want (e.g. in-site authentication, OAuth, etc).
 
 ## Installation
 
@@ -20,7 +22,9 @@ Then run `rails generate simple_auth:install` to copy the initializer file.
 
 ## Usage
 
-The initializer will install the required helper methods on your controller. So, let's say you want to support `user` and `admin` authentication. You'll need to specify the following scope.
+The initializer will install the required helper methods on your controller. So,
+let's say you want to support `user` and `admin` authentication. You'll need to
+specify the following scope.
 
 ```ruby
 # config/initializers/simple_auth.rb
@@ -33,7 +37,10 @@ SimpleAuth.setup do |config|
 end
 ```
 
-Session is valid only when `Controller#authorized_#{scope}?` method returns `true`, which is the default behavior. You can override these methods with your own rules; the following example shows how you can authorize all e-mails from `@example.com` to access the admin dashboard.
+Session is valid only when `Controller#authorized_#{scope}?` method returns
+`true`, which is the default behavior. You can override these methods with your
+own rules; the following example shows how you can authorize all e-mails from
+`@example.com` to access the admin dashboard.
 
 ```ruby
 class Admin::DashboardController < ApplicationController
@@ -70,11 +77,33 @@ class SessionsController < ApplicationController
 end
 ```
 
-First thing to notice is that simple_auth doesn't care about how you authenticate. You could easily set up a different authentication strategy, e.g. API tokens. The important part is assign the `record:` and `scope:` options. The `return_to` helper will give you the requested url (before the user logged in) or the default url.
+First thing to notice is that SimpleAuth doesn't care about how you
+authenticate. You could easily set up a different authentication strategy, e.g.
+API tokens. The important part is assigning the `record:` and `scope:` options.
+The `return_to` helper will give you the requested url (before the user logged
+in) or the default url.
 
-Same thing applies to destroying a session. You can just reset it, calling `reset_session`.
+SimpleAuth uses [GlobalID](https://github.com/rails/globalid) as the session
+identifier. This allows using any objects that respond to `#to_gid`, including
+namespaced models and POROs.
 
-You can restrict access by using 2 macros. Use `redirect_logged_#{scope}` to avoid rendering a page for logged user.
+```ruby
+session[:user_id]
+#=> gid://myapp/User/1
+```
+
+If you need to locate a record using such value, you can do it by calling
+`GlobalID::Locator.locate(session[:user_id])`
+
+### Logging out users
+
+Logging out a user is just as simple; all you have to do is calling the regular
+`reset_session`.
+
+### Restricting access
+
+You can restrict access by using 2 macros. Use `redirect_logged_#{scope}` to
+avoid rendering a page for logged user.
 
 ```ruby
 class SignupController < ApplicationController
