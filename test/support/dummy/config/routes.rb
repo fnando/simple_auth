@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   controller :pages do
     get :index
+    get :log_in
+    get :logged_area, as: "pages_logged_area"
   end
 
   namespace :admin do
