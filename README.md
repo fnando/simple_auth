@@ -95,6 +95,14 @@ session[:user_id]
 If you need to locate a record using such value, you can do it by calling
 `GlobalID::Locator.locate(session[:user_id])`
 
+Finally, only `ActiveRecord::RecordNotFound` errors are trapped by SimpleAuth
+(when ActiveRecord is available). If you locator raises a different exception,
+add the error class to the list of known exceptions.
+
+```ruby
+SimpleAuth::Session.record_not_found_exceptions << CustomNotFoundRecordError
+```
+
 ### Logging out users
 
 Logging out a user is just as simple; all you have to do is calling the regular

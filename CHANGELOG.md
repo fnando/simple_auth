@@ -1,3 +1,9 @@
+# unreleased
+
+- Catch exceptions related to record not found when session tries to load a
+  record from session. You can customize the recognized exceptions by adding the
+  error class to `SimpleAuth::Session.record_not_found_exceptions`.
+
 # v3.1.0
 
 - SimpleAuth now uses [GlobalID](https://github.com/rails/globalid) as the
