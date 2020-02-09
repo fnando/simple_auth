@@ -1,4 +1,4 @@
-# unreleased
+# v3.1.1
 
 - Catch exceptions related to record not found when session tries to load a
   record from session. You can customize the recognized exceptions by adding the
