@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require "simplecov"
-SimpleCov.start
+SimpleCov.start do
+  add_filter "/test/"
+end
 
 require "bundler/setup"
 require "rack/test"
@@ -16,4 +18,4 @@ require "active_record"
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
 require "./test/support/schema"
 
-Dir["./test/support/**/*.rb"].each {|file| require file }
+Dir["./test/support/**/*.rb"].sort.each {|file| require file }

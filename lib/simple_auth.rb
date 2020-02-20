@@ -22,6 +22,7 @@ module SimpleAuth
   end
 
   setup do |config|
+    config.flash_message_key = :alert
     config.scopes = %i[user]
     config.login_url = -> { login_path }
     config.logged_url = -> { dashboard_path }

@@ -10,9 +10,20 @@ class PagesControllerTest < ActionController::TestCase
     User.delete_all
   end
 
+  teardown do
+    SimpleAuth.config.flash_message_key = :alert
+  end
+
   test "sets flash message while redirecting unlogged user" do
     get :index
     assert_equal "You must be logged in to access this page.", flash[:alert]
+  end
+
+  test "sets flash message using custom key" do
+    SimpleAuth.config.flash_message_key = :error
+
+    get :index
+    assert_equal "You must be logged in to access this page.", flash[:error]
   end
 
   test "redirects to login url" do

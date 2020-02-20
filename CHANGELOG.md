@@ -1,3 +1,8 @@
+# unreleased
+
+- Make flash message key configurable via
+  `SimpleAuth::Config#flash_message_key`.
+
 # v3.1.1
 
 - Catch exceptions related to record not found when session tries to load a
@@ -18,7 +23,8 @@
 
 # v2.0.3
 
-- Assign the raw password/confirmation, so we can apply validations on the raw value.
+- Assign the raw password/confirmation, so we can apply validations on the raw
+  value.
 
 # v2.0.2
 

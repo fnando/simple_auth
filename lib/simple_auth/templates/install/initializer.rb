@@ -20,6 +20,10 @@ SimpleAuth.setup do |config|
   # when `before_action :redirect_logged_user` filter is used.
   config.logged_url = proc { dashboard_path }
 
+  # Set the flash message key.
+  # This will be used when setting messages for unlogged/unauthorized users.
+  config.flash_message_key = :alert
+
   # Install SimpleAuth helpers to the controllers.
   config.install_helpers!
 end

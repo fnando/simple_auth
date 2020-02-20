@@ -32,6 +32,7 @@ SimpleAuth.setup do |config|
   config.scopes = %i[user admin]
   config.login_url = proc { login_path }
   config.logged_url = proc { dashboard_path }
+  config.flash_message_key = :alert
 
   config.install_helpers!
 end
@@ -143,11 +144,25 @@ These are the translations you'll need:
 en:
   simple_auth:
     user:
-      need_to_be_logged_in: "You need to be logged"
+      need_to_be_logged_in: "You need to be logged in"
       not_authorized: "You don't have permission to access this page"
 ```
 
 If you don't set these translations, a default message will be used.
+
+To display the error message, use something like `<%= flash[:alert] %>`. If you
+want to use a custom key, say `:error`, use the configuration file
+`config/initializers/simple_auth.rb` to define the new key:
+
+# config/initializers/simple_auth.rb
+SimpleAuth.setup do |config|
+  # ...
+
+  config.flash_message_key = :error
+
+  # ...
+end
+```
 
 ## Maintainer
 

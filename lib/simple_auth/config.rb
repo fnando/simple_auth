@@ -16,6 +16,10 @@ module SimpleAuth
     # Default to `dashboard_path`.
     attr_accessor :logged_url
 
+    # Set the flash message key.
+    # This will be used when setting messages for unlogged/unauthorized users.
+    attr_accessor :flash_message_key
+
     def install_helpers!
       ::ActionController::Base.include SimpleAuth::ActionController
     end
