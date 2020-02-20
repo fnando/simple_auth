@@ -1,4 +1,4 @@
-# unreleased
+# v3.1.2
 
 - Make flash message key configurable via
   `SimpleAuth::Config#flash_message_key`.
