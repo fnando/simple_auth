@@ -1,4 +1,4 @@
-# Unreleased
+# v3.1.3
 
 - Remove session[:return_to] after using it.
 
