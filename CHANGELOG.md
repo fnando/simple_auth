@@ -1,3 +1,7 @@
+# Unreleased
+
+- Remove session[:return_to] after using it.
+
 # v3.1.2
 
 - Make flash message key configurable via

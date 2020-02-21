@@ -35,9 +35,11 @@ class PagesControllerTest < ActionController::TestCase
   test "redirects to requested url" do
     get :index
     assert_redirected_to login_path
+    assert_equal "/index", session[:return_to]
 
     get :log_in
     assert_redirected_to controller: :pages, action: :index
+    refute session.key?(:return_to)
   end
 
   test "redirects to default url" do

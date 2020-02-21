@@ -50,7 +50,7 @@ module SimpleAuth
     end
 
     private def return_to(url)
-      session[:return_to] || url
+      session.delete(:return_to) || url
     end
 
     private def simple_auth_require_logged_scope(scope)
