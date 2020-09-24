@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/simple_auth"
   s.summary     = "A simple authentication system for Rails apps"
   s.description = s.summary
+  s.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

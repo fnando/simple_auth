@@ -4,6 +4,9 @@ inherit_gem:
 
 AllCops:
   TargetRubyVersion: 2.6
+  Exclude:
+    - gemfiles/**/*
+    - vendor/**/*
 
 Metrics/AbcSize:
   Enabled: false
