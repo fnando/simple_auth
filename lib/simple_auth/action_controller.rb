@@ -16,16 +16,25 @@ module SimpleAuth
         end
       end
 
-      def install_simple_auth_scope(scope) # rubocop:disable Metrics/MethodLength
+      def install_simple_auth_scope(scope)
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          # def user_session
+          #   @user_session ||= Session.create(scope: :user, session: session)
+          # end
           def #{scope}_session
             @#{scope}_session ||= Session.create(scope: :#{scope}, session: session)
           end
 
+          # def current_user
+          #   user_session.record
+          # end
           def current_#{scope}
             #{scope}_session.record
           end
 
+          # def user_logged_in?
+          #   current_user.present?
+          # end
           def #{scope}_logged_in?
             current_#{scope}.present?
           end

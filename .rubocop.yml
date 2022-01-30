@@ -3,10 +3,7 @@ inherit_gem:
   rubocop-fnando: .rubocop.yml
 
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
   Exclude:
     - gemfiles/**/*
     - vendor/**/*
-
-Metrics/AbcSize:
-  Enabled: false
