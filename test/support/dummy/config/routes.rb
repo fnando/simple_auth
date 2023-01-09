@@ -5,6 +5,17 @@ Rails.application.routes.draw do
   get "/admin/dashboard", to: "admin/dashboard#index"
   get "/login", to: "sessions#new"
 
+  post "/start-session", to: "sessions#create_session"
+  post "/terminate-session", to: "sessions#terminate_session"
+
+  authenticate :admin, ->(u) { u.admin? } do
+    get "/only/admins", to: ->(_env) { [200, {}, ["OK"]] }
+  end
+
+  authenticate :user, ->(u) { u.email == "admin@example.com" } do
+    get "only/admins-by-email", to: ->(_env) { [200, {}, ["OK"]] }
+  end
+
   controller :dashboard do
     get :log_in
     get :not_logged

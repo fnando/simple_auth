@@ -135,6 +135,21 @@ current_#{scope}       # e.g. current_user    (available in controller & views)
 #{scope}_session       # e.g. user_session    (available in controller & views)
 ```
 
+#### From your routes file
+
+You can also restrict routes directly from your routes:
+
+```ruby
+Rails.application.routes.draw do
+  authenticate :admin, ->(user) { user.admin? } do
+    mount Sidekiq::Web, at: "sidekiq"
+  end
+end
+```
+
+In this case, `:admin` is the scope and the lambda will only be called whenever
+there's a valid record associated with that record.
+
 ### Translations
 
 These are the translations you'll need:
