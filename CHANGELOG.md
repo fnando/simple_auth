@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v3.1.4
 
 - Add `authenticate(scope, condition, &block)`, so you can restrict routes
   directly from the routes definition.
