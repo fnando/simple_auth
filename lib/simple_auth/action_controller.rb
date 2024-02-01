@@ -63,12 +63,12 @@ module SimpleAuth
     end
 
     private def simple_auth_require_logged_scope(scope)
-      action = RequireLoginAction.new(self, scope)
+      authorization = RequireLoginAction.new(self, scope)
 
-      return if action.valid?
+      return if authorization.valid?
 
       reset_session
-      flash[simple_auth.flash_message_key] = action.message
+      flash[simple_auth.flash_message_key] = authorization.error_message
       session[:return_to] = request.fullpath if request.get?
       redirect_to instance_eval(&simple_auth.login_url)
     end

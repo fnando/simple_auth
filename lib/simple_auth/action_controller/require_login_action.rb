@@ -18,7 +18,7 @@ module SimpleAuth
         valid_session? && authorized?
       end
 
-      def message
+      def error_message
         return if valid?
         return unauthorized_message unless authorized?
 
@@ -26,11 +26,11 @@ module SimpleAuth
       end
 
       private def valid_session?
-        controller.send("#{scope}_session").valid?
+        controller.send(:"#{scope}_session").valid?
       end
 
       private def authorized?
-        controller.send("authorized_#{scope}?")
+        controller.send(:"authorized_#{scope}?")
       end
 
       private def unauthorized_message
