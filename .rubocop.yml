@@ -7,3 +7,6 @@ AllCops:
   Exclude:
     - gemfiles/**/*
     - vendor/**/*
+
+Minitest/EmptyLineBeforeAssertionMethods:
+  Enabled: false

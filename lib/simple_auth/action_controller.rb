@@ -40,15 +40,15 @@ module SimpleAuth
           end
         RUBY
 
-        define_method "authorized_#{scope}?" do
+        define_method :"authorized_#{scope}?" do
           true
         end
 
-        define_method "require_logged_#{scope}" do
+        define_method :"require_logged_#{scope}" do
           simple_auth_require_logged_scope(scope)
         end
 
-        define_method "redirect_logged_#{scope}" do
+        define_method :"redirect_logged_#{scope}" do
           simple_auth_redirect_logged_scope(scope)
         end
       end
@@ -74,7 +74,7 @@ module SimpleAuth
     end
 
     private def simple_auth_redirect_logged_scope(scope)
-      scope_session = send("#{scope}_session")
+      scope_session = send(:"#{scope}_session")
       return unless scope_session.valid?
 
       redirect_to instance_eval(&simple_auth.logged_url)
