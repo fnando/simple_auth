@@ -11,7 +11,7 @@ module SimpleAuth
       end
 
       def call(request)
-        session = Session.create(scope: scope, session: request.session)
+        session = Session.create(scope:, session: request.session)
         record = session.record
 
         record && condition.call(record)
@@ -20,7 +20,7 @@ module SimpleAuth
 
     def authenticate(scope, condition, &block)
       with_options(
-        constraints: Matcher.new(scope: scope, condition: condition)
+        constraints: Matcher.new(scope:, condition:)
       ) do
         instance_eval(&block)
       end

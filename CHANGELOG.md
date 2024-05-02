@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Bump up ruby requirement to 3.2.
+
 ## v3.1.4
 
 - Add `authenticate(scope, condition, &block)`, so you can restrict routes
