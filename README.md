@@ -159,8 +159,8 @@ These are the translations you'll need:
 en:
   simple_auth:
     user:
-      need_to_be_logged_in: "You need to be logged in"
-      not_authorized: "You don't have permission to access this page"
+      unlogged_in: "You need to be logged in"
+      unauthorized: "You don't have permission to access this page"
 ```
 
 If you don't set these translations, a default message will be used.
