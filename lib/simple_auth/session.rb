@@ -6,8 +6,8 @@ module SimpleAuth
       @record_not_found_exceptions ||= []
     end
 
-    def self.create(**kwargs)
-      new(**kwargs)
+    def self.create(**)
+      new(**)
     end
 
     def initialize(scope:, session:, record: nil)
