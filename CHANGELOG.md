@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v3.2.0
 
 - Bump up ruby requirement to 3.3.
 - Add support for ActionController::API
