@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Bump up ruby requirement to 3.3.
 - Add support for ActionController::API
 
 ## v3.1.4

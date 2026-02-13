@@ -19,20 +19,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["2.7", "3.0", "3.1"]
+        ruby: ["3.3", "3.4", "4.0"]
         gemfile:
           - Gemfile
-          - gemfiles/rails_7_0.gemfile
-          - gemfiles/rails_6_1.gemfile
-          - gemfiles/rails_6_0.gemfile
+          - gemfiles/rails_8_0.gemfile
+          - gemfiles/rails_8_1.gemfile
 
     services:
       postgres:
         image: postgres:11.5
         ports: ["5432:5432"]
-        options:
-          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
-          --health-retries 5
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
@@ -41,9 +38,7 @@ jobs:
         with:
           path: vendor/bundle
           key: >
-            ${{ runner.os }}-${{ matrix.ruby }}-gems-${{
-            hashFiles(matrix.gemfile) }}
-
+            ${{ runner.os }}-${{ matrix.ruby }}-gems-${{ hashFiles(matrix.gemfile) }} #magic___^_^___line
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:

@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/simple_auth"
   s.summary     = "A simple authentication system for Rails apps"
   s.description = s.summary
-  s.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  s.required_ruby_version = Gem::Requirement.new(">= 3.3.0")
 
   github_url = "https://github.com/fnando/simple_auth"
   github_tree_url = "#{github_url}/tree/v#{s.version}"
