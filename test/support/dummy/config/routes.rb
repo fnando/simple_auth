@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   post "/start-session", to: "sessions#create_session"
   post "/terminate-session", to: "sessions#terminate_session"
 
-  authenticate :admin, ->(u) { u.admin? } do
+  authenticate :admin, lambda(&:admin?) do
     get "/only/admins", to: ->(_env) { [200, {}, ["OK"]] }
   end
 
@@ -35,4 +35,6 @@ Rails.application.routes.draw do
       get :log_in_with_admin_flag
     end
   end
+
+  get "api", to: "api#index"
 end

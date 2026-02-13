@@ -22,6 +22,7 @@ module SimpleAuth
 
     def install_helpers!
       ::ActionController::Base.include SimpleAuth::ActionController
+      ::ActionController::API.include SimpleAuth::ActionController::API
     end
   end
 end

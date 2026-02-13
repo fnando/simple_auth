@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add support for ActionController::API
+
 ## v3.1.4
 
 - Add `authenticate(scope, condition, &block)`, so you can restrict routes

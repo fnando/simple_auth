@@ -12,7 +12,10 @@ module SimpleAuth
       def install_simple_auth_scopes
         SimpleAuth.config.scopes.each do |scope|
           install_simple_auth_scope(scope)
-          helper_method "current_#{scope}", "#{scope}_logged_in?"
+
+          if respond_to?(:helper_method)
+            helper_method("current_#{scope}", "#{scope}_logged_in?")
+          end
         end
       end
 
@@ -67,10 +70,7 @@ module SimpleAuth
 
       return if authorization.valid?
 
-      reset_session
-      flash[simple_auth.flash_message_key] = authorization.error_message
-      session[:return_to] = request.fullpath if request.get?
-      redirect_to instance_eval(&simple_auth.login_url)
+      render_unauthorized_access(authorization)
     end
 
     private def simple_auth_redirect_logged_scope(scope)
@@ -78,6 +78,13 @@ module SimpleAuth
       return unless scope_session.valid?
 
       redirect_to instance_eval(&simple_auth.logged_url)
+    end
+
+    private def render_unauthorized_access(authorization)
+      reset_session
+      flash[simple_auth.flash_message_key] = authorization.error_message
+      session[:return_to] = request.fullpath if request.get?
+      redirect_to instance_eval(&simple_auth.login_url)
     end
   end
 end

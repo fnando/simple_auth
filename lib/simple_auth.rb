@@ -10,6 +10,7 @@ module SimpleAuth
   require "simple_auth/config"
   require "simple_auth/railtie"
   require "simple_auth/action_controller"
+  require "simple_auth/action_controller/api"
   require "simple_auth/routing_mapper"
   require "simple_auth/action_controller/require_login_action"
   require "simple_auth/session"

@@ -150,6 +150,54 @@ end
 In this case, `:admin` is the scope and the lambda will only be called whenever
 there's a valid record associated with that record.
 
+### API Controllers
+
+simple_auth supports `ActionController::API`-based controllers. Include the
+`SimpleAuth::ActionController::API` module in your API controller:
+
+```ruby
+class ApiController < ActionController::API
+  include SimpleAuth::ActionController::API
+
+  before_action :authenticate_via_token
+  before_action :require_logged_user
+
+  def index
+    render json: {message: "hello there"}
+  end
+
+  private def authenticate_via_token
+    user = User.find_by_api_token(id: request.headers["Authorization"])
+
+    return render(plain: "401 Unauthorized", status: :unauthorized) unless user
+
+    SimpleAuth::Session.create(scope: "user", session:, record: user)
+  end
+end
+```
+
+By default, unauthorized requests receive a `401 Unauthorized` plain text
+response. You can override `render_unauthorized_access(authorization)` to
+customize this behavior. The `authorization` object gives you access to
+`authorization.error_message`, which contains the translated error message for
+the failed authorization:
+
+```ruby
+class ApiController < ActionController::API
+  include SimpleAuth::ActionController::API
+
+  private def render_unauthorized_access(authorization)
+    render json: {error: authorization.error_message}, status: :unauthorized
+  end
+end
+```
+
+> [!NOTE]
+>
+> `SimpleAuth::ActionController::API` defines a stub session object that's just
+> a hash, so the user record can be resolved across multiple calls within the
+> same request.
+
 ### Translations
 
 These are the translations you'll need:
